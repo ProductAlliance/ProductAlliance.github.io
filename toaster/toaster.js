@@ -17,46 +17,35 @@ $(function(){
   // From https://stackoverflow.com/a/47480429
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  // Run the code
-  // const main = async () => {
-    // createAndShowToast();
-    //
-    // // Wait
-    // await delay(3000);
-    // createAndShowToast("<strong>55</strong> people bought the course today lorem ipsum lorem ipsum");
+  // This will be set to false once we've matched, and that
+  // will let us break out
+  let hasMatched = false;
 
-    // This will be set to false once we've matched, and that
-    // will let us break out
-    let hasMatched = false;
+  // Read FOMO config to figure out what to do
+  FOMO_CONFIG.forEach((configObject) => {
+    // See if it matches the URL
+    if (!hasMatched &&
+        window.location.href.search(configObject.pageRegex) > -1) {
+      // Loop through the toasts
+      configObject.toasts.forEach(async (toastInfo) => {
+        // Wait until we're ready
+        await delay(toastInfo.time);
 
-    // Read FOMO config to figure out what to do
-    FOMO_CONFIG.forEach((configObject) => {
-      // See if it matches the URL
-      if (!hasMatched &&
-          window.location.href.search(configObject.pageRegex) > -1) {
-        // Loop through the toasts
-        configObject.toasts.forEach(async (toastInfo) => {
-          // Wait until we're ready
-          await delay(toastInfo.time / 10);
-
-          // Now create and show
-          createAndShowToast({
-            messageHTML: toastInfo.text,
-            ctaText: toastInfo.ctaText,
-            ctaURL: toastInfo.ctaURL,
-            icon: toastInfo.icon
-          });
+        // Now create and show
+        createAndShowToast({
+          messageHTML: toastInfo.text,
+          ctaText: toastInfo.ctaText,
+          ctaURL: toastInfo.ctaURL,
+          icon: toastInfo.icon
         });
+      });
 
-        // We will only match one, so let's drop out
-        // (this lets us have a "fallback" default)
-        // console.log(configObject.pageRegex);
-        hasMatched = true;
-      }
-    });
-  // };
-  //
-  // main();
+      // We will only match one, so let's drop out
+      // (this lets us have a "fallback" default)
+      // console.log(configObject.pageRegex);
+      hasMatched = true;
+    }
+  });
 });
 
 
