@@ -242,7 +242,7 @@ const FOMO_CONFIG = [
     "toasts": makeJobInternToasts(g_analytics.used_job_list, "job")
   },
   {
-    "pageRegex": "/intern-list",
+    "pageRegex": "/internship-list",
     "toasts": makeJobInternToasts(g_analytics.used_internship_list, "internship")
   },
 
