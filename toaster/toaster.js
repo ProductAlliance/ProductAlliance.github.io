@@ -3,7 +3,8 @@ $(function(){
   // Create absolutely-positioned element to store toasts
   let toastHolderHTML = `
     <!-- Position it -->
-    <div style="position: fixed; bottom: 0; right: 0; margin: 1em;">
+    <div id="toast-wrapper"
+      style="position: fixed; bottom: 0; right: 0; margin: 1em;">
 
       <!-- Then put toasts within -->
       <div id="toast-holder">

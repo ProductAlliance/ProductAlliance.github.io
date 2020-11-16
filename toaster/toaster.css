@@ -67,6 +67,6 @@
   cursor: pointer;
 }
 
-#toast-holder {
+#toast-wrapper {
   z-index: 999;
 }
