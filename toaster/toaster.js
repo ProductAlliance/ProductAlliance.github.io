@@ -3,7 +3,7 @@ $(function(){
   // Create absolutely-positioned element to store toasts
   let toastHolderHTML = `
     <!-- Position it -->
-    <div style="position: absolute; bottom: 0; right: 0; margin: 1em;">
+    <div style="position: fixed; bottom: 0; right: 0; margin: 1em;">
 
       <!-- Then put toasts within -->
       <div id="toast-holder">
@@ -29,7 +29,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time);
+        await delay(toastInfo.time / 10);
 
         // Now create and show
         createAndShowToast({
@@ -141,7 +141,7 @@ function createAndShowToast(options) {
 
             <br>
 
-            <small class="text-success">
+            <small class="text-info">
               ${ICONS.verified}
               Verified
             </small>
@@ -243,8 +243,8 @@ function makeGuideToasts(viewNumber, company, role){
   return [
     {
       "time": 15000,
-      "text": `<strong>${viewNumber} prospective
-        ${company} ${role} candidates</strong> read this cheat-sheet in the last week.`,
+      "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
+        read this cheat-sheet in the last week.`,
       "icon": ICONS.book_half,
     },
     makeWatchedWebinarToast(),
