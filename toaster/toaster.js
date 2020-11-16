@@ -30,7 +30,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 10);
+        await delay(toastInfo.time / 1);
 
         // Now create and show
         createAndShowToast({
