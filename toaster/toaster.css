@@ -1,6 +1,6 @@
 /* From https://www.florin-pop.com/blog/2019/03/css-pulse-effect/ */
 /* Creates a pulsing ball */
-/* .pulsar {
+.pulsar {
   background: rgba(64, 150, 239, 1);
   border-radius: 50%;
   height: 4rem;
@@ -26,36 +26,8 @@
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(64, 150, 239, 0);
   }
-} */
-
-/* NEW GREEN STYLE */
-.pulsar {
-  background: rgba(43, 190, 149, 1);
-  border-radius: 50%;
-  height: 4rem;
-  width: 4rem;
-
-  box-shadow: 0 0 0 0 rgba(43, 190, 149, 1);
-  transform: scale(1);
-  animation: pulse 5s infinite;
 }
 
-@keyframes pulse {
-  0% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(43, 190, 149, 0.7);
-  }
-
-  70% {
-    transform: scale(1);
-    box-shadow: 0 0 0 1rem rgba(43, 190, 149, 0);
-  }
-
-  100% {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(43, 190, 149, 0);
-  }
-}
 
 /** Misc styling **/
 .toast {
@@ -64,6 +36,10 @@
   padding: 0.75rem;
 
   /* Make the whole thing look clickable */
+  /* cursor: pointer; */
+}
+
+.clickable {
   cursor: pointer;
 }
 

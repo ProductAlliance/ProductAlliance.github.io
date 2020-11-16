@@ -4,7 +4,9 @@ $(function(){
   let toastHolderHTML = `
     <!-- Position it -->
     <div id="toast-wrapper"
-      style="position: fixed; bottom: 0; right: 0; margin: 1em;">
+      style="position: fixed; bottom: 0; left: 0; margin: 1em;"
+      class="d-none d-md-block"
+      >
 
       <!-- Then put toasts within -->
       <div id="toast-holder">
@@ -30,7 +32,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 1);
+        await delay(toastInfo.time / 10);
 
         // Now create and show
         createAndShowToast({
@@ -78,6 +80,9 @@ const ICONS = {
   "verified": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-patch-check-fll" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984a.5.5 0 0 0-.708-.708L7 8.793 5.854 7.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
                 </svg>`,
+  "check_circle": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+</svg>`,
   "reels": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-camera-reels-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M0 8a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 7.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 16H2a2 2 0 0 1-2-2V8z"/>
   <circle cx="3" cy="3" r="3"/>
@@ -142,10 +147,17 @@ function createAndShowToast(options) {
 
             <br>
 
-            <small class="text-info">
-              ${ICONS.verified}
+            <span class="small text-success">
+              ${ICONS.check_circle}
               Verified
-            </small>
+            </span>
+            &middot;
+            <span class="small text-muted">
+              <span data-dismiss="toast" class="clickable">
+                Dismiss
+              </span>
+            </span>
+
           </div>
         </div>
       </div>
@@ -161,11 +173,11 @@ function createAndShowToast(options) {
   });
 
   // Set up click handlers on the whole toast
-  if (ctaURL) {
-    $('#' + toastID).on("click", () => {
-      window.location.href = ctaURL;
-    });
-  }
+  // if (ctaURL) {
+  //   $('#' + toastID).on("click", () => {
+  //     window.location.href = ctaURL;
+  //   });
+  // }
 
   // Now show it
   $('#' + toastID).toast('show');
@@ -251,7 +263,7 @@ function makeGuideToasts(viewNumber, company, role){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
-        read this cheat-sheet in the last week.`,
+        read this cheat-sheet in the last 48 hours.`,
       "icon": ICONS.book_half,
     },
     makeWatchedWebinarToast(),
@@ -265,7 +277,7 @@ function makeVideoToasts(viewNumber, caseStudy){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        watched this ${caseStudy} strategy video in the last week.`,
+        watched this ${caseStudy} strategy video in the last 48 hours.`,
       "icon": ICONS.play,
     },
     makeWatchedWebinarToast(),
@@ -279,7 +291,7 @@ function makeJobInternToasts(viewNumber, type){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        used this list to apply for PM ${type}s this week.`,
+        used this list to apply for PM ${type}s in the last 48 hours.`,
       "icon": ICONS.briefcase,
     },
     makeWatchedWebinarToast(),
@@ -294,7 +306,7 @@ function makeWatchedWebinarToast(time=25000){
   return {
     "time": time,
     "text": `<strong>${g_analytics.watched_webinar} candidates</strong>
-      watched our free 42-minute PM interview lesson in the last week.`,
+      watched our free 42-minute PM interview lesson in the last 48 hours.`,
     "ctaText": "Sign up for free!",
     "ctaURL": "#footer",
     "icon": ICONS.video,
