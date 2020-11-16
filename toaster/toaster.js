@@ -300,7 +300,7 @@ function makeBoughtCourseToast(time=55000) {
     "time": time,
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
       lifetime access to our 3-course PM bundle in the last 48 hours.`,
-    "ctaText": "Get the course!",
+    "ctaText": "Get 55% off!",
     "ctaURL": "#pricing",
     "icon": ICONS.cart,
   };
