@@ -4,7 +4,6 @@ $(function(){
   let toastHolderHTML = `
     <!-- Position it -->
     <div id="toast-wrapper"
-      style="position: fixed; bottom: 0; left: 0; margin: 1em;"
       class="d-none d-md-block"
       >
 
