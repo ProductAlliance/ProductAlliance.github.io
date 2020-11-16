@@ -251,6 +251,12 @@ const FOMO_CONFIG = [
     "pageRegex": "pricing",
     "toasts": []
   },
+  // Similarly, if you're at the footer (result of a CTA to sign up for the webinar),
+  // don't upsell anything
+  {
+    "pageRegex": "footer",
+    "toasts": []
+  },
 
   // Fall back to show some generic toasts on all other pages
   {
