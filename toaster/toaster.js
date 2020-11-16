@@ -139,7 +139,7 @@ function createAndShowToast(options) {
       <div class="toast-body">
         <div class="row">
           <div class="col-sm-4 row align-items-center">
-            <div class="pulsar mx-auto row align-items-center">
+            <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
               <div class="h2 text-white mx-auto">${icon}</div>
             </div>
           </div>
@@ -175,12 +175,16 @@ function createAndShowToast(options) {
   let toastOptions = duration ? { delay: duration } : { autohide: false };
   $('#' + toastID).toast(toastOptions);
 
-  // Set up click handlers on the whole toast
-  // if (ctaURL) {
-  //   $('#' + toastID).on("click", () => {
-  //     window.location.href = ctaURL;
-  //   });
-  // }
+  // Set up click handlers on the pulsing bubble to go to the CTA.
+  // That lets people get to the endpoint more easily without screwing up
+  // formatting by adding an <a> tag
+  if (ctaURL) {
+    $('#' + toastID).find(".pulsar")
+      .addClass("clickable")
+      .on("click", () => {
+        window.location.href = ctaURL;
+      });
+  }
 
   // Now show it
   $('#' + toastID).toast('show');
