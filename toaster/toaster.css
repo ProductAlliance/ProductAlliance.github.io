@@ -39,6 +39,10 @@
   /* cursor: pointer; */
 }
 
+.toast a {
+  text-decoration: underline;
+}
+
 .clickable {
   cursor: pointer;
 }

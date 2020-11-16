@@ -32,14 +32,15 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 10);
+        await delay(toastInfo.time / 1);
 
         // Now create and show
         createAndShowToast({
           messageHTML: toastInfo.text,
           ctaText: toastInfo.ctaText,
           ctaURL: toastInfo.ctaURL,
-          icon: toastInfo.icon
+          icon: toastInfo.icon,
+          duration: toastInfo.duration,
         });
       });
 
@@ -103,9 +104,10 @@ const ICONS = {
 // - ctaText
 // - ctaURL
 // - icon
+// - duration
 function createAndShowToast(options) {
   // Unbundle options
-  let {messageHTML, ctaText, ctaURL, icon} = options;
+  let {messageHTML, ctaText, ctaURL, icon, duration} = options;
 
   // Generate a unique ID
   let toastID = "toast-" + Date.now();
@@ -167,10 +169,11 @@ function createAndShowToast(options) {
 
   // Create element
   $(toastHTML).appendTo($("#toast-holder"));
-  $('#' + toastID).toast({
-    delay: 5000,
-    autohide: false
-  });
+
+  // Build the toast. Give it a timeout if one was provided, else
+  // make it last forever.
+  let toastOptions = duration ? { delay: duration } : { autohide: false };
+  $('#' + toastID).toast(toastOptions);
 
   // Set up click handlers on the whole toast
   // if (ctaURL) {
@@ -263,8 +266,9 @@ function makeGuideToasts(viewNumber, company, role){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
-        read this cheat-sheet in the last 48 hours.`,
+        read this cheat sheet in the last 48 hours.`,
       "icon": ICONS.book_half,
+      "duration": 30000,
     },
     makeWatchedWebinarToast(),
     makeBoughtCourseToast()
@@ -279,6 +283,7 @@ function makeVideoToasts(viewNumber, caseStudy){
       "text": `<strong>${viewNumber} PM candidates</strong>
         watched this ${caseStudy} strategy video in the last 48 hours.`,
       "icon": ICONS.play,
+      "duration": 30000,
     },
     makeWatchedWebinarToast(),
     makeBoughtCourseToast()
@@ -293,6 +298,7 @@ function makeJobInternToasts(viewNumber, type){
       "text": `<strong>${viewNumber} PM candidates</strong>
         used this list to apply for PM ${type}s in the last 48 hours.`,
       "icon": ICONS.briefcase,
+      "duration": 30000,
     },
     makeWatchedWebinarToast(),
     makeBoughtCourseToast()
