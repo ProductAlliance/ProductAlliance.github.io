@@ -227,6 +227,12 @@ const FOMO_CONFIG = [
     "toasts": makeJobInternToasts(g_analytics.used_internship_list, "internship")
   },
 
+  // If we're already on the pricing page, don't get in the way!
+  {
+    "pageRegex": "pricing",
+    "toasts": []
+  },
+
   // Fall back to show some generic toasts on all other pages
   {
     "pageRegex": ".*",
@@ -301,7 +307,7 @@ function makeBoughtCourseToast(time=55000) {
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
       lifetime access to our 3-course PM bundle in the last 48 hours.`,
     "ctaText": "Get 55% off!",
-    "ctaURL": "#pricing",
+    "ctaURL": "https://productalliance.com/#pricing",
     "icon": ICONS.cart,
   };
 }
