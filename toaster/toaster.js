@@ -32,7 +32,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 1);
+        await delay(toastInfo.time / 10);
 
         // Now create and show
         createAndShowToast({
@@ -137,17 +137,21 @@ function createAndShowToast(options) {
         </button>
       </div>-->
       <div class="toast-body">
-        <div class="row">
+        <div class="row no-gutters">
           <div class="col-sm-4 row align-items-center">
             <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
-              <div class="h2 text-white mx-auto">${icon}</div>
+              <div class="text-white mx-auto toast-icon">
+                ${icon}
+              </div>
             </div>
           </div>
           <div class="col-sm-8">
             ${messageHTML}
             ${ctaHTML}
 
-            <br>
+            <div class="toast-separator">
+              <br>
+            </div>
 
             <span class="small text-success">
               ${ICONS.check_circle}
