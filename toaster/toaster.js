@@ -4,7 +4,7 @@ $(function(){
   let toastHolderHTML = `
     <!-- Position it -->
     <div id="toast-wrapper"
-      class="d-none d-md-block"
+      class="d-none d-lg-block"
       >
 
       <!-- Then put toasts within -->
@@ -31,7 +31,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 10);
+        await delay(toastInfo.time / 1);
 
         // Now create and show
         createAndShowToast({
@@ -91,6 +91,9 @@ const ICONS = {
   "play": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-play-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
 </svg>`,
+  "right_arrow": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-11.5.5a.5.5 0 0 1 0-1h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5z"/>
+</svg>`,
 };
 
 
@@ -114,10 +117,43 @@ function createAndShowToast(options) {
   // Generate the CTA code. Only show it if ctaURL was given
   let ctaHTML = "";
   if (ctaURL) {
+    // We're nerfing the custom links in favor of plain text and an arrow button
+    // ctaHTML = `
+    //   <a href="${ctaURL}" data-dismiss="toast">
+    //     ${ctaText}
+    //   </a>`;
     ctaHTML = `
-      <a href="${ctaURL}" data-dismiss="toast">
-        ${ctaText}
-      </a>`;
+      ${ctaText}
+    `;
+  }
+
+  let newCtaHTML = "";
+  if (ctaURL) {
+    newCtaHTML = `<div class="cta-separator">
+                  <br>
+                </div>
+
+                <a href="${ctaURL}">
+                  <div class="arrow-button">
+                    ${ICONS.right_arrow}
+                  </div>
+                </a>`;
+  }
+
+  // The body text. Either an <a> or a plain ol' span if there's no
+  // CTA.
+  let mainText = `
+    <span>
+      ${messageHTML}
+    </span>
+  `;
+  if (ctaURL) {
+    mainText = `
+      <a href="${ctaURL}" class="text-dark">
+        ${messageHTML}
+        ${ctaHTML}
+      </a>
+    `;
   }
 
   // Generate toast HTML
@@ -144,9 +180,8 @@ function createAndShowToast(options) {
               </div>
             </div>
           </div>
-          <div class="col-sm-8">
-            ${messageHTML}
-            ${ctaHTML}
+          <div class="col-sm-7">
+            ${mainText}
 
             <div class="toast-separator">
               <br>
@@ -158,11 +193,17 @@ function createAndShowToast(options) {
             </span>
             &middot;
             <span class="small text-muted">
-              <span data-dismiss="toast" class="clickable">
-                Dismiss
-              </span>
+              in the last 48 hours
             </span>
+          </div>
+          <div class="col-sm-1 row mx-auto">
+            <div class="small text-muted">
+              <span data-dismiss="toast" class="clickable">
+                &times;
+              </span>
+            </div>
 
+            ${newCtaHTML}
           </div>
         </div>
       </div>
@@ -279,7 +320,7 @@ function makeGuideToasts(viewNumber, company, role){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
-        read this cheat sheet in the last 48 hours.`,
+        read this cheat sheet.`,
       "icon": ICONS.book_half,
       "duration": 30000,
     },
@@ -294,7 +335,7 @@ function makeVideoToasts(viewNumber, caseStudy){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        watched this ${caseStudy} strategy video in the last 48 hours.`,
+        watched this ${caseStudy} strategy video.`,
       "icon": ICONS.play,
       "duration": 30000,
     },
@@ -309,7 +350,7 @@ function makeJobInternToasts(viewNumber, type){
     {
       "time": 15000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        used this list to apply for PM ${type}s in the last 48 hours.`,
+        used this list to apply for PM ${type}s.`,
       "icon": ICONS.briefcase,
       "duration": 30000,
     },
@@ -325,7 +366,7 @@ function makeWatchedWebinarToast(time=25000){
   return {
     "time": time,
     "text": `<strong>${g_analytics.watched_webinar} candidates</strong>
-      watched our free 42-minute PM interview lesson in the last 48 hours.`,
+      watched our forty-two minute PM interview lesson.`,
     "ctaText": "Sign up for free!",
     "ctaURL": "#footer",
     "icon": ICONS.video,
@@ -336,7 +377,7 @@ function makeBoughtCourseToast(time=55000) {
   return {
     "time": time,
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
-      lifetime access to our 3-course PM bundle in the last 48 hours.`,
+      lifetime access to our PM interview courses.`,
     "ctaText": "Get 55% off!",
     "ctaURL": "https://productalliance.com/#pricing",
     "icon": ICONS.cart,
