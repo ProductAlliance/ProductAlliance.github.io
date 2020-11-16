@@ -136,7 +136,7 @@ function createAndShowToast(options) {
         </button>
       </div>-->
       <div class="toast-body">
-        <div class="row no-gutters">
+        <div class="row no-guttersOFF">
           <div class="col-sm-4 row align-items-center">
             <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
               <div class="text-white mx-auto toast-icon">
