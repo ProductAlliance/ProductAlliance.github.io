@@ -31,7 +31,7 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 1);
+        await delay(toastInfo.time / 10);
 
         // Now create and show
         createAndShowToast({
@@ -134,40 +134,43 @@ function createAndShowToast(options) {
                   <div class="arrow-button">
                     ${ICONS.right_arrow}
                   </div>
-                </a>`;
+                </a>
+                `;
   }
 
   // The body text. Either an <a> or a plain ol' span if there's no
   // CTA.
   let mainText = `
-    <span>
+    <span class="text-dark">
       ${messageHTML}
     </span>
   `;
   if (ctaURL) {
     mainText = `
-      <a href="${ctaURL}" class="text-dark">
-        ${messageHTML}
-        ${ctaHTML}
+      <a href="${ctaURL}">
+        <span class="text-dark">
+          ${messageHTML}
+          ${ctaHTML}
+        </span>
       </a>
     `;
   }
 
+  // make the toast appear clickable if it has a cta
+  let toastClass = ctaURL ? "toast-clickable" : "toast-unclickable";
+
+  // Wrap toast in an <a> if it has a cta
+  let toastWrapStart = "";
+  let toastWrapEnd = "";
+  // if (ctaURL) {
+  //   toastWrapStart = `<a href="${ctaURL}" class="toast-a">`;
+  //   toastWrapEnd = `</a>`;
+  // }
+
   // Generate toast HTML
   let toastHTML = `
-  <div class="toast bg-light" id="${toastID}">
-      <!--<div class="toast-header">
-        <strong class="mr-auto text-primary">Product Alliance</strong>
-        <small>
-          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-patch-check-fll" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984a.5.5 0 0 0-.708-.708L7 8.793 5.854 7.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
-          </svg>
-          Verified
-        </small>
-        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>-->
+  ${toastWrapStart}
+    <div class="toast bg-white ${toastClass}" id="${toastID}">
       <div class="toast-body">
         <div class="row no-guttersOFF">
           <div class="col-sm-4 row align-items-center">
@@ -177,22 +180,23 @@ function createAndShowToast(options) {
               </div>
             </div>
           </div>
+
           <div class="col-sm-7 row align-items-center">
-          <div>
-            ${mainText}
+            <div>
+              ${mainText}
 
-            <div class="toast-separator">
-              <br>
-            </div>
+              <div class="toast-separator">
+                <br>
+              </div>
 
-            <span class="small text-info">
-              ${ICONS.check_circle}
-              Verified
-            </span>
-            &middot;
-            <span class="small text-muted">
-              in the last 48 hours
-            </span>
+              <span class="small text-info">
+                ${ICONS.check_circle}
+                Verified
+              </span>
+              &middot;
+              <span class="small text-muted">
+                in the last 48 hours
+              </span>
             </div>
           </div>
 
@@ -201,14 +205,14 @@ function createAndShowToast(options) {
           </div>
         </div>
 
-        <div class="toast-closer small text-muted">
-          <span data-dismiss="toast" class="clickable">
+        <div class="toast-closer clickable text-muted">
+          <span data-dismiss="toast">
             &times;
           </span>
         </div>
       </div>
     </div>
-  </div>
+  ${toastWrapEnd}
   `;
 
   // Create element
@@ -219,16 +223,18 @@ function createAndShowToast(options) {
   let toastOptions = duration ? { delay: duration } : { autohide: false };
   $('#' + toastID).toast(toastOptions);
 
+  // style the toast
+
   // Set up click handlers on the pulsing bubble to go to the CTA.
   // That lets people get to the endpoint more easily without screwing up
   // formatting by adding an <a> tag
-  if (ctaURL) {
-    $('#' + toastID).find(".pulsar")
-      .addClass("clickable")
-      .on("click", () => {
-        window.location.href = ctaURL;
-      });
-  }
+  // if (ctaURL) {
+  //   $('#' + toastID).find(".pulsar")
+  //     .addClass("clickable")
+  //     .on("click", () => {
+  //       window.location.href = ctaURL;
+  //     });
+  // }
 
   // Now show it
   $('#' + toastID).toast('show');

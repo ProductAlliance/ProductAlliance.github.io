@@ -90,3 +90,16 @@
   top: 0.5rem;
   right: 2rem;
 }
+
+.toast-clickable:hover {
+  /* background-color: #ECECED !important; */
+}
+
+.toast-a {
+  display: block;
+  margin: 0.75rem 0;
+}
+
+.toast-a:hover {
+  text-decoration: none;
+}
