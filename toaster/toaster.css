@@ -1,12 +1,12 @@
 /* From https://www.florin-pop.com/blog/2019/03/css-pulse-effect/ */
 /* Creates a pulsing ball */
 .pulsar {
-  background: rgba(64, 150, 239, 1);
+  background: rgba(16, 96, 236, 1);
   border-radius: 50%;
   height: 5rem;
   width: 5rem;
 
-  box-shadow: 0 0 0 0 rgba(64, 150, 239, 1);
+  box-shadow: 0 0 0 0 rgba(16, 96, 236, 1);
   transform: scale(1);
   animation: pulse 5s infinite;
 }
@@ -14,17 +14,17 @@
 @keyframes pulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(64, 150, 239, 0.7);
+    box-shadow: 0 0 0 0 rgba(16, 96, 236, 0.7);
   }
 
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 1rem rgba(64, 150, 239, 0);
+    box-shadow: 0 0 0 1rem rgba(16, 96, 236, 0);
   }
 
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(64, 150, 239, 0);
+    box-shadow: 0 0 0 0 rgba(16, 96, 236, 0);
   }
 }
 
@@ -33,7 +33,7 @@
 .toast {
   min-width: 550px;
   border-radius: 5rem;
-  padding: 0.75rem;
+  padding: 0.75rem 0;
 
   /* Inherit Product Alliance font */
   font-family: Inter, sans-serif;
@@ -64,15 +64,29 @@
   margin: 1rem;
 }
 
+.toast-body strong {
+  color: rgba(16, 96, 236, 1);
+}
+
 .arrow-button {
-  color: rgba(64, 150, 239, 1);
-  font-size: 1.5rem;
+  color: rgba(16, 96, 236, 1);
+  font-size: 1.8rem;
 
   /* Make it sorta horizontally centered */
   position: relative;
-  left: -0.5rem;
+  left: -0.6rem;
 }
 
 .cta-separator {
   line-height: 50%;
+}
+
+.toast-body {
+  position: relative;
+}
+
+.toast-closer {
+  position: absolute;
+  top: 0.5rem;
+  right: 2rem;
 }

@@ -129,10 +129,7 @@ function createAndShowToast(options) {
 
   let newCtaHTML = "";
   if (ctaURL) {
-    newCtaHTML = `<div class="cta-separator">
-                  <br>
-                </div>
-
+    newCtaHTML = `
                 <a href="${ctaURL}">
                   <div class="arrow-button">
                     ${ICONS.right_arrow}
@@ -180,14 +177,15 @@ function createAndShowToast(options) {
               </div>
             </div>
           </div>
-          <div class="col-sm-7">
+          <div class="col-sm-7 row align-items-center">
+          <div>
             ${mainText}
 
             <div class="toast-separator">
               <br>
             </div>
 
-            <span class="small text-success">
+            <span class="small text-info">
               ${ICONS.check_circle}
               Verified
             </span>
@@ -195,16 +193,18 @@ function createAndShowToast(options) {
             <span class="small text-muted">
               in the last 48 hours
             </span>
-          </div>
-          <div class="col-sm-1 row mx-auto">
-            <div class="small text-muted">
-              <span data-dismiss="toast" class="clickable">
-                &times;
-              </span>
             </div>
+          </div>
 
+          <div class="col-sm-1 row mx-auto align-items-center">
             ${newCtaHTML}
           </div>
+        </div>
+
+        <div class="toast-closer small text-muted">
+          <span data-dismiss="toast" class="clickable">
+            &times;
+          </span>
         </div>
       </div>
     </div>
