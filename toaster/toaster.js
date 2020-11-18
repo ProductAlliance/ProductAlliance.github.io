@@ -31,7 +31,10 @@ $(function(){
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
-        await delay(toastInfo.time / 10);
+        // Cut wait times by 10 if we're not in prod, for easier testing
+        let inProd = window.location.href.indexOf("productalliance.com") > -1;
+        let delayMultiplier = inProd ? 1 : 1/10;
+        await delay(toastInfo.time * delayMultiplier);
 
         // Now create and show
         createAndShowToast({
@@ -128,15 +131,15 @@ function createAndShowToast(options) {
   }
 
   let newCtaHTML = "";
-  if (ctaURL) {
-    newCtaHTML = `
-                <a href="${ctaURL}">
-                  <div class="arrow-button">
-                    ${ICONS.right_arrow}
-                  </div>
-                </a>
-                `;
-  }
+  // if (ctaURL) {
+  //   newCtaHTML = `
+  //               <a href="${ctaURL}">
+  //                 <div class="arrow-button">
+  //                   ${ICONS.right_arrow}
+  //                 </div>
+  //               </a>
+  //               `;
+  // }
 
   // The body text. Either an <a> or a plain ol' span if there's no
   // CTA.
@@ -147,13 +150,35 @@ function createAndShowToast(options) {
   `;
   if (ctaURL) {
     mainText = `
-      <a href="${ctaURL}">
+      <a href="${ctaURL}" data-dismiss="toast">
         <span class="text-dark">
           ${messageHTML}
           ${ctaHTML}
         </span>
       </a>
     `;
+  }
+
+  // Only make the toast dismissable with an X if it lasts forever.
+  // If it has a finite duration, don't show the X; make users wait
+  let dismissX = "";
+  if (duration === undefined || duration === 0) {
+    dismissX = `
+      <div class="toast-closer clickable text-muted">
+        <span data-dismiss="toast">
+          &times;
+        </span>
+      </div>
+    `;
+  }
+
+
+  // Wrap the pulsar with a link if there's a cta
+  let pulsarWrapStart = "";
+  let pulsarWrapEnd = "";
+  if (ctaURL) {
+    pulsarWrapStart = `<a href="${ctaURL}" class="mx-auto" data-dismiss="toast">`;
+    pulsarWrapEnd = `</a>`;
   }
 
   // make the toast appear clickable if it has a cta
@@ -174,14 +199,16 @@ function createAndShowToast(options) {
       <div class="toast-body">
         <div class="row no-guttersOFF">
           <div class="col-sm-4 row align-items-center">
-            <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
-              <div class="text-white mx-auto toast-icon">
-                ${icon}
+            ${pulsarWrapStart}
+              <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
+                <div class="text-white mx-auto toast-icon">
+                  ${icon}
+                </div>
               </div>
-            </div>
+            ${pulsarWrapEnd}
           </div>
 
-          <div class="col-sm-7 row align-items-center">
+          <div class="col-sm-8 row align-items-center">
             <div>
               ${mainText}
 
@@ -200,16 +227,13 @@ function createAndShowToast(options) {
             </div>
           </div>
 
-          <div class="col-sm-1 row mx-auto align-items-center">
+          <!--<div class="col-sm-1 row mx-auto align-items-center">
             ${newCtaHTML}
-          </div>
+          </div>-->
         </div>
 
-        <div class="toast-closer clickable text-muted">
-          <span data-dismiss="toast">
-            &times;
-          </span>
-        </div>
+        ${dismissX}
+
       </div>
     </div>
   ${toastWrapEnd}
@@ -220,7 +244,8 @@ function createAndShowToast(options) {
 
   // Build the toast. Give it a timeout if one was provided, else
   // make it last forever.
-  let toastOptions = duration ? { delay: duration } : { autohide: false };
+  let toastOptions = duration && duration > 0 ?
+    { delay: duration } : { autohide: false };
   $('#' + toastID).toast(toastOptions);
 
   // style the toast
@@ -312,8 +337,8 @@ const FOMO_CONFIG = [
   {
     "pageRegex": ".*",
     "toasts": [
-      makeWatchedWebinarToast(15000),
-      makeBoughtCourseToast(45000)
+      makeBoughtCourseToast(time=10000, duration=8000),
+      makeWatchedWebinarToast(time=20000, duration=0)
     ]
   },
 ];
@@ -324,14 +349,14 @@ const FOMO_CONFIG = [
 function makeGuideToasts(viewNumber, company, role){
   return [
     {
-      "time": 15000,
+      "time": 10000,
+      "duration": 8000,
       "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
         read this cheat sheet.`,
       "icon": ICONS.book_half,
-      "duration": 30000,
     },
-    makeWatchedWebinarToast(),
-    makeBoughtCourseToast()
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
   ];
 }
 
@@ -339,14 +364,14 @@ function makeGuideToasts(viewNumber, company, role){
 function makeVideoToasts(viewNumber, caseStudy){
   return [
     {
-      "time": 15000,
+      "time": 10000,
+      "duration": 8000,
       "text": `<strong>${viewNumber} PM candidates</strong>
         watched this ${caseStudy} strategy video.`,
       "icon": ICONS.play,
-      "duration": 30000,
     },
-    makeWatchedWebinarToast(),
-    makeBoughtCourseToast()
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
   ];
 }
 
@@ -354,38 +379,40 @@ function makeVideoToasts(viewNumber, caseStudy){
 function makeJobInternToasts(viewNumber, type){
   return [
     {
-      "time": 15000,
+      "time": 10000,
+      "duration": 8000,
       "text": `<strong>${viewNumber} PM candidates</strong>
         used this list to apply for PM ${type}s.`,
       "icon": ICONS.briefcase,
-      "duration": 30000,
     },
-    makeWatchedWebinarToast(),
-    makeBoughtCourseToast()
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
   ];
 }
 
 
 
 // Small utility chunks
-function makeWatchedWebinarToast(time=25000){
+function makeWatchedWebinarToast(time=30000, duration=0){
   return {
     "time": time,
+    "duration": duration,
     "text": `<strong>${g_analytics.watched_webinar} candidates</strong>
       watched our forty-two minute PM interview lesson.`,
     "ctaText": "Sign up for free!",
     "ctaURL": "#footer",
-    "icon": ICONS.video,
+    "icon": ICONS.video
   };
 }
 
-function makeBoughtCourseToast(time=55000) {
+function makeBoughtCourseToast(time=20000, duration=8000) {
   return {
     "time": time,
+    "duration": duration,
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
       lifetime access to our PM interview courses.`,
     "ctaText": "Get 55% off!",
     "ctaURL": "https://productalliance.com/#pricing",
-    "icon": ICONS.cart,
+    "icon": ICONS.cart
   };
 }
