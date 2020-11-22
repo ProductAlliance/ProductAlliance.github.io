@@ -164,7 +164,7 @@ function createAndShowToast(options) {
   let dismissX = "";
   if (duration === undefined || duration === 0) {
     dismissX = `
-      <div class="toast-closer clickable text-muted">
+      <div class="toast-closerOFF clickable text-muted">
         <span data-dismiss="toast">
           &times;
         </span>
@@ -197,18 +197,20 @@ function createAndShowToast(options) {
   ${toastWrapStart}
     <div class="toast bg-white ${toastClass}" id="${toastID}">
       <div class="toast-body">
-        <div class="row no-guttersOFF">
-          <div class="col-sm-4 row align-items-center">
-            ${pulsarWrapStart}
-              <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
-                <div class="text-white mx-auto toast-icon">
-                  ${icon}
+        <div class="row no-gutters">
+          <div class="col-3 rowOFF align-items-centerOFF">
+            <div class="row align-items-center full-height">
+              ${pulsarWrapStart}
+                <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
+                  <div class="text-white mx-auto toast-icon">
+                    ${icon}
+                  </div>
                 </div>
-              </div>
-            ${pulsarWrapEnd}
+              ${pulsarWrapEnd}
+            </div>
           </div>
 
-          <div class="col-sm-8 row align-items-center">
+          <div class="col-8 rowOFF align-items-centerOFF">
             <div>
               ${mainText}
 
@@ -227,12 +229,10 @@ function createAndShowToast(options) {
             </div>
           </div>
 
-          <!--<div class="col-sm-1 row mx-auto align-items-center">
-            ${newCtaHTML}
-          </div>-->
+          <div class="col-1 rowOFF align-items-centerOFF">
+            ${dismissX}
+          </div>
         </div>
-
-        ${dismissX}
 
       </div>
     </div>
