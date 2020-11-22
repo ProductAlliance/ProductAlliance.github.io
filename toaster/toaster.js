@@ -399,9 +399,9 @@ function makeWatchedWebinarToast(time=30000, duration=0){
   return {
     "time": time,
     "duration": duration,
-    "text": `<strong>${g_analytics.watched_webinar} candidates</strong>
-      watched our forty-two minute PM interview lesson.`,
-    "ctaText": "Sign up for free!",
+    "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
+      our free PM interview lesson.`,
+    "ctaText": "",
     "ctaURL": "#footer",
     "icon": ICONS.video
   };
@@ -412,8 +412,8 @@ function makeBoughtCourseToast(time=20000, duration=8000) {
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
-      lifetime access to our PM interview courses.`,
-    "ctaText": "Get 55% off!",
+      lifetime access to our interview courses.`,
+    "ctaText": "",
     "ctaURL": "https://productalliance.com/#pricing",
     "icon": ICONS.cart
   };
