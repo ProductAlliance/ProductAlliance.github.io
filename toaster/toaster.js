@@ -32,7 +32,9 @@ $(function(){
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
         // Cut wait times by 10 if we're not in prod, for easier testing
-        let inProd = window.location.href.indexOf("productalliance.com") > -1;
+        // (also cut it on webflow so it's more authentic)
+        let inProd = window.location.href.indexOf("productalliance.com") > -1 ||
+          window.location.href.indexOf("webflow.io") > -1;
         let delayMultiplier = inProd ? 1 : 1/10;
         await delay(toastInfo.time * delayMultiplier);
 
