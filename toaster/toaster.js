@@ -224,10 +224,10 @@ function createAndShowToast(options) {
                 ${ICONS.check_circle}
                 Verified
               </span>
-              <!-- &middot;
+              &middot;
               <span class="small text-muted">
                 in the last 48 hours
-              </span> -->
+              </span>
             </div>
           </div>
 
