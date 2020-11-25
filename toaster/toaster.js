@@ -226,7 +226,7 @@ function createAndShowToast(options) {
               </span>
               &middot;
               <span class="small text-muted">
-                in the last 48 hours
+                in the last 24 hours
               </span>
             </div>
           </div>
