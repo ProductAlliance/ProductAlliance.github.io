@@ -224,10 +224,10 @@ function createAndShowToast(options) {
                 ${ICONS.check_circle}
                 Verified
               </span>
-              &middot;
+              <!-- &middot;
               <span class="small text-muted">
                 in the last 48 hours
-              </span>
+              </span> -->
             </div>
           </div>
 
@@ -354,7 +354,7 @@ function makeGuideToasts(viewNumber, company, role){
       "time": 10000,
       "duration": 8000,
       "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
-        read this cheat sheet.`,
+        read this cheat sheet today.`,
       "icon": ICONS.book_half,
     },
     makeBoughtCourseToast(time=20000, duration=8000),
@@ -369,7 +369,7 @@ function makeVideoToasts(viewNumber, caseStudy){
       "time": 10000,
       "duration": 8000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        watched this ${caseStudy} strategy video.`,
+        watched this ${caseStudy} strategy video today.`,
       "icon": ICONS.play,
     },
     makeBoughtCourseToast(time=20000, duration=8000),
@@ -384,7 +384,7 @@ function makeJobInternToasts(viewNumber, type){
       "time": 10000,
       "duration": 8000,
       "text": `<strong>${viewNumber} PM candidates</strong>
-        used this list to apply for PM ${type}s.`,
+        used this list to apply for PM ${type}s today.`,
       "icon": ICONS.briefcase,
     },
     makeBoughtCourseToast(time=20000, duration=8000),
@@ -400,7 +400,7 @@ function makeWatchedWebinarToast(time=30000, duration=0){
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
-      our free PM interview lesson.`,
+      our free PM interview lesson today.`,
     "ctaText": "",
     "ctaURL": "#footer",
     "icon": ICONS.video
@@ -412,7 +412,7 @@ function makeBoughtCourseToast(time=20000, duration=8000) {
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
-      lifetime access to our interview courses.`,
+      access to our interview courses today.`,
     "ctaText": "",
     "ctaURL": "https://productalliance.com/#pricing",
     "icon": ICONS.cart
