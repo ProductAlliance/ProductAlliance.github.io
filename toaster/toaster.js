@@ -212,7 +212,7 @@ function createAndShowToast(options) {
             </div>
           </div>
 
-          <div class="col-8 rowOFF align-items-centerOFF">
+          <div class="col-8 rowOFF align-items-centerOFF toast-text">
             <div>
               ${mainText}
 
@@ -231,7 +231,7 @@ function createAndShowToast(options) {
             </div>
           </div>
 
-          <div class="col-1 rowOFF align-items-centerOFF">
+          <div class="col-1 dismiss-x rowOFF align-items-centerOFF">
             ${dismissX}
           </div>
         </div>
