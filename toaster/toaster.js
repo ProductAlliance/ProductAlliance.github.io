@@ -1,10 +1,12 @@
 $(function(){
 
   // Create absolutely-positioned element to store toasts
+  // also try to isolate bootstrap with .bootstrapiso
+  // per https://github.com/cryptoapi/Isolate-Bootstrap-4.1-CSS-Themes
   let toastHolderHTML = `
     <!-- Position it -->
     <div id="toast-wrapper"
-      class="d-none d-lg-block"
+      class="d-none d-lg-block bootstrapiso"
       >
 
       <!-- Then put toasts within -->

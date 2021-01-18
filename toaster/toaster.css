@@ -32,7 +32,7 @@
 /** Misc styling **/
 .toast {
   min-width: 300px;
-  border-radius: 5rem;
+  border-radius: 5rem !important;
 
   /* Inherit Product Alliance font */
   font-family: Inter, sans-serif;
