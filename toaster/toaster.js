@@ -6,12 +6,13 @@ $(function(){
   let toastHolderHTML = `
     <!-- Position it -->
     <div id="toast-wrapper"
-      class="d-none d-lg-block bootstrapiso"
+      class="bootstrapiso"
       >
 
-      <!-- Then put toasts within -->
-      <div id="toast-holder">
-
+      <!-- This is the real content holder (hidden on small screens) -->
+      <div class="d-none d-lg-block">
+        <!-- Then put toasts within -->
+        <div id="toast-holder"></div>
       </div>
     </div>
   `;
