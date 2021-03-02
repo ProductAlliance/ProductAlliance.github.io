@@ -105,6 +105,15 @@ const ICONS = {
 };
 
 
+/*
+ * Public functions that we can call from anywhere on the page.
+ */
+// Shows the popup that advertises the webinar and asks the user to
+// input their email address.
+function showWebinarPopup(){
+  $('.webinar-popup').css({"display": "flex", "opacity":1});
+  $('.webinar-overlay').css({"display": "flex", "opacity":1});
+}
 
 
 // Creates a toast, puts it on the page, and immediately shows it.
@@ -399,13 +408,23 @@ function makeJobInternToasts(viewNumber, type){
 
 // Small utility chunks
 function makeWatchedWebinarToast(time=30000, duration=0){
+  // try showing the webinar popup if it exists on the page.
+  // that has a really nice email-grabbing UI.
+  // otherwise, just go to the footer, where we have a simpler but omnipresent
+  // email-grabber.
+  let ctaURL = "#footer";
+  if ($('.webinar-popup').length > 0){
+    // the popup exists!
+    ctaURL = "javascript:showWebinarPopup()";
+  }
+
   return {
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
       our free PM interview lesson today.`,
     "ctaText": "",
-    "ctaURL": "#footer",
+    "ctaURL": ctaURL,
     "icon": ICONS.video
   };
 }
