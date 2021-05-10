@@ -36,8 +36,8 @@
 
 /** Misc styling **/
 .toast {
-  min-width: 300px;
-  border-radius: 5rem !important;
+  min-width: 400px;
+  border-radius: 9999px !important;
 
   /* Inherit Product Alliance font */
   font-family: Inter, sans-serif;

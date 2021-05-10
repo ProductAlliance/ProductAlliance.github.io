@@ -31,6 +31,7 @@ $(function(){
     // See if it matches the URL
     if (!hasMatched &&
         window.location.href.search(configObject.pageRegex) > -1) {
+      console.log("MATCHED", configObject);
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
@@ -284,19 +285,23 @@ const FOMO_CONFIG = [
   // For the interview strategy guide pages
   {
     "pageRegex": "/guides/facebook-pm",
-    "toasts": makeGuideToasts(g_analytics.facebook_pm_viewers, "Facebook", "PM")
+    // "toasts": makeGuideToasts(g_analytics.facebook_pm_viewers, "Facebook", "PM")
+    "toasts": makeFacebookToasts("PM"),
   },
   {
     "pageRegex": "/guides/facebook-rpm",
-    "toasts": makeGuideToasts(g_analytics.facebook_rpm_viewers, "Facebook", "RPM")
+    // "toasts": makeGuideToasts(g_analytics.facebook_rpm_viewers, "Facebook", "RPM")
+    "toasts": makeFacebookToasts("RPM"),
   },
   {
     "pageRegex": "/guides/google-pm",
-    "toasts": makeGuideToasts(g_analytics.google_pm_viewers, "Google", "PM")
+    // "toasts": makeGuideToasts(g_analytics.google_pm_viewers, "Google", "PM")
+    "toasts": makeGoogleToasts("PM"),
   },
   {
     "pageRegex": "/guides/google-apm",
-    "toasts": makeGuideToasts(g_analytics.google_apm_viewers, "Google", "APM")
+    // "toasts": makeGuideToasts(g_analytics.google_apm_viewers, "Google", "APM")
+    "toasts": makeGoogleToasts("APM"),
   },
   {
     "pageRegex": "/guides/amazon-pm",
@@ -305,6 +310,16 @@ const FOMO_CONFIG = [
   {
     "pageRegex": "/guides/microsoft-pm",
     "toasts": makeGuideToasts(g_analytics.microsoft_pm_viewers, "Microsoft", "PM")
+  },
+
+  // For individual course pages
+  {
+    "pageRegex": "/courses/flagship-google",
+    "toasts": makeGoogleToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-facebook",
+    "toasts": makeFacebookToasts("PM"),
   },
 
   // For video pages
@@ -433,10 +448,110 @@ function makeBoughtCourseToast(time=20000, duration=8000) {
   return {
     "time": time,
     "duration": duration,
-    "text": `<strong>${g_analytics.bought_course} candidates bought</strong>
+    "text": `<strong>${g_analytics.total_course_sales} candidates bought</strong>
       access to our interview courses today.`,
     "ctaText": "",
     "ctaURL": "https://productalliance.com/#pricing",
     "icon": ICONS.cart
   };
+}
+
+
+
+
+
+/**
+
+  ALL NEW functions.
+
+*/
+
+/**
+  Returns a CTA URL for webinar upsells.
+*/
+function getWebinarCtaURL() {
+  // try showing the webinar popup if it exists on the page.
+  // that has a really nice email-grabbing UI.
+  // otherwise, just go to the footer, where we have a simpler but omnipresent
+  // email-grabber.
+  let ctaURL = "#footer";
+  if ($('.webinar-popup').length > 0){
+    // the popup exists!
+    ctaURL = "javascript:showWebinarPopup()";
+  }
+
+  return ctaURL;
+}
+
+/**
+  NEW: Creates a series of toasts for a given company's course or guide
+  page. This upsells the specific company webinar, then its course.
+*/
+function makeCompanyToasts(numSales, numWebinarViews, company, role) {
+
+  // Each company's purchase upsell goes to a different page. Compute that
+  // URL here.
+  let companyCourseURL;
+  switch (company) {
+    case "Facebook":
+      companyCourseURL = "https://www.productalliance.com/courses/flagship-facebook-pm-interview-course";
+      break;
+    case "Google":
+      companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
+      break;
+    default:
+      // Default to the generic sales page.
+      companyCourseURL = "https://www.productalliance.com/#pricing";
+      break;
+  }
+
+  return [
+    // First, upsell the course itself
+    {
+      "time": 10000,
+      "duration": 8000,
+      "text": `<strong>${numSales} candidates bought access</strong>
+        to our ${company} PM course today.`,
+      "ctaText": "",
+      "ctaURL": companyCourseURL,
+      "icon": ICONS.cart,
+    },
+
+    // Next, upsell the webinar
+    {
+      "time": 20000,
+      "duration": 0, // Make it persistent
+      "text": `<strong>${numWebinarViews} candidates watched</strong>
+        our free ${company} PM interview lesson today.`,
+      "ctaText": "",
+      "ctaURL": getWebinarCtaURL(),
+      "icon": ICONS.video,
+    },
+  ];
+}
+
+// Reusable aliases for the above.
+function makeFacebookToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.facebook_course_sales,
+    // Num webinar views
+    g_analytics.watched_facebook_webinar,
+    // Company
+    "Facebook",
+    // Role
+    role,
+  );
+}
+function makeGoogleToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.google_course_sales,
+    // Num webinar views
+    g_analytics.watched_google_webinar,
+    // Company
+    "Google",
+    // Role
+    role,
+  );
 }
