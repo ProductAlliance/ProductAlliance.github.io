@@ -169,9 +169,11 @@ function createAndShowToast(options) {
   // }
 
 
-  // If we're going to a different page (i.e. URL doesn't have "#"), then make
+  // If we're going to a different page (i.e. URL doesn't have "#" and isn't
+  // a JavaScript one), then make
   // it open in `_blank`.
-  let targetString = ctaURL.indexOf("#") === -1 ? `target="_blank"` : ``;
+  let isTargetAnotherPage = ctaURL.indexOf("#") === -1 && ctaURL.indexOf("javascript:") === -1;
+  let targetString = isTargetAnotherPage ? `target="_blank"` : ``;
 
   // The body text. Either an <a> or a plain ol' span if there's no
   // CTA.
