@@ -1,5 +1,6 @@
 $(function(){
 
+
   // Create absolutely-positioned element to store toasts
   // also try to isolate bootstrap with .bootstrapiso
   // per https://github.com/cryptoapi/Isolate-Bootstrap-4.1-CSS-Themes
@@ -31,7 +32,7 @@ $(function(){
     // See if it matches the URL
     if (!hasMatched &&
         window.location.href.search(configObject.pageRegex) > -1) {
-      console.log("MATCHED", configObject);
+      // console.log("MATCHED", configObject);
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
@@ -59,6 +60,16 @@ $(function(){
     }
   });
 });
+
+
+/** Constants **/
+const CheckoutPages = {
+  GOOGLE:     "https://course.productalliance.com/offers/ugzhbRnS/checkout",
+  FACEBOOK:   "https://course.productalliance.com/offers/oLQBcqT2/checkout",
+  DEEP_DIVES: "https://course.productalliance.com/offers/L7VUVzGB/checkout",
+  HACKING:    "https://course.productalliance.com/offers/b3WbAUAY/checkout",
+  BREAKING:   "https://course.productalliance.com/offers/EPo6QGzY/checkout",
+};
 
 
 
@@ -112,8 +123,9 @@ const ICONS = {
 // Shows the popup that advertises the webinar and asks the user to
 // input their email address.
 function showWebinarPopup(){
-  $('.webinar-popup').css({"display": "flex", "opacity":1});
-  $('.webinar-overlay').css({"display": "flex", "opacity":1});
+  $('#webinarpopup').css({ "display": "flex", "opacity": 1 });
+  $('.main-popup').css({ "display": "flex", "opacity": 1 });
+  $('.popup-overlay').css({ "display": "flex", "opacity": 1 });
 }
 
 
@@ -156,6 +168,11 @@ function createAndShowToast(options) {
   //               `;
   // }
 
+
+  // If we're going to a different page (i.e. URL doesn't have "#"), then make
+  // it open in `_blank`.
+  let targetString = ctaURL.indexOf("#") === -1 ? `target="_blank"` : ``;
+
   // The body text. Either an <a> or a plain ol' span if there's no
   // CTA.
   let mainText = `
@@ -165,7 +182,7 @@ function createAndShowToast(options) {
   `;
   if (ctaURL) {
     mainText = `
-      <a href="${ctaURL}" data-dismiss="toast">
+      <a href="${ctaURL}" ${targetString} data-dismiss="toast">
         <span class="text-dark">
           ${messageHTML}
           ${ctaHTML}
@@ -192,7 +209,7 @@ function createAndShowToast(options) {
   let pulsarWrapStart = "";
   let pulsarWrapEnd = "";
   if (ctaURL) {
-    pulsarWrapStart = `<a href="${ctaURL}" class="mx-auto" data-dismiss="toast">`;
+    pulsarWrapStart = `<a href="${ctaURL}" ${targetString} class="mx-auto" data-dismiss="toast">`;
     pulsarWrapEnd = `</a>`;
   }
 
@@ -427,11 +444,7 @@ function makeWatchedWebinarToast(time=30000, duration=0){
   // that has a really nice email-grabbing UI.
   // otherwise, just go to the footer, where we have a simpler but omnipresent
   // email-grabber.
-  let ctaURL = "#footer";
-  if ($('.webinar-popup').length > 0){
-    // the popup exists!
-    ctaURL = "javascript:showWebinarPopup()";
-  }
+  let ctaURL = getWebinarCtaURL();
 
   return {
     "time": time,
@@ -475,13 +488,14 @@ function getWebinarCtaURL() {
   // otherwise, just go to the footer, where we have a simpler but omnipresent
   // email-grabber.
   let ctaURL = "#footer";
-  if ($('.webinar-popup').length > 0){
+  if ($('#webinarpopup').length > 0){
     // the popup exists!
     ctaURL = "javascript:showWebinarPopup()";
   }
 
   return ctaURL;
 }
+
 
 /**
   NEW: Creates a series of toasts for a given company's course or guide
@@ -494,10 +508,14 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
   let companyCourseURL;
   switch (company) {
     case "Facebook":
-      companyCourseURL = "https://www.productalliance.com/courses/flagship-facebook-pm-interview-course";
+      // NEW: we'll just link to the checkout pages for the courses
+      companyCourseURL = CheckoutPages.FACEBOOK;
+      // companyCourseURL = "https://www.productalliance.com/courses/flagship-facebook-pm-interview-course";
       break;
     case "Google":
-      companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
+      // NEW: we'll just link to the checkout pages for the courses
+      companyCourseURL = CheckoutPages.GOOGLE;
+      // companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
       break;
     default:
       // Default to the generic sales page.
