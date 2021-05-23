@@ -299,39 +299,43 @@ function createAndShowToast(options) {
   $('#' + toastID).toast('show');
 }
 
+
+
+/**
+  TOASTS
+**/
+
 // Configuration for where/how to show the toasts.
 const FOMO_CONFIG = [
   // For the interview strategy guide pages
   {
     "pageRegex": "/guides/facebook-pm",
-    // "toasts": makeGuideToasts(g_analytics.facebook_pm_viewers, "Facebook", "PM")
     "toasts": makeFacebookToasts("PM"),
   },
   {
     "pageRegex": "/guides/facebook-rpm",
-    // "toasts": makeGuideToasts(g_analytics.facebook_rpm_viewers, "Facebook", "RPM")
     "toasts": makeFacebookToasts("RPM"),
   },
   {
     "pageRegex": "/guides/google-pm",
-    // "toasts": makeGuideToasts(g_analytics.google_pm_viewers, "Google", "PM")
     "toasts": makeGoogleToasts("PM"),
   },
   {
     "pageRegex": "/guides/google-apm",
-    // "toasts": makeGuideToasts(g_analytics.google_apm_viewers, "Google", "APM")
     "toasts": makeGoogleToasts("APM"),
   },
   {
     "pageRegex": "/guides/amazon-pm",
+    // TODO: switch to using the company toasts once the Amazon course is live
     "toasts": makeGuideToasts(g_analytics.amazon_pm_viewers, "Amazon", "PM")
   },
   {
     "pageRegex": "/guides/microsoft-pm",
+    // TODO: switch to using the company toasts once the Microsoft course is live
     "toasts": makeGuideToasts(g_analytics.microsoft_pm_viewers, "Microsoft", "PM")
   },
 
-  // For individual course pages
+  // For individual course pages. Other courses will use the generic toasts.
   {
     "pageRegex": "/courses/flagship-google",
     "toasts": makeGoogleToasts("PM"),
@@ -391,7 +395,10 @@ const FOMO_CONFIG = [
   },
 ];
 
-// Convenience functions to generate config blobs.
+
+/**
+  Generate configurations for toasts.
+**/
 
 // This is for /guides/ pages
 function makeGuideToasts(viewNumber, company, role){
@@ -452,7 +459,7 @@ function makeWatchedWebinarToast(time=30000, duration=0){
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
-      our free PM interview lesson today.`,
+      our free,<br>31-minute PM interview lesson today.`,
     "ctaText": "",
     "ctaURL": ctaURL,
     "icon": ICONS.video
@@ -507,21 +514,27 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
 
   // Each company's purchase upsell goes to a different page. Compute that
   // URL here.
+  // We'll also show the number of minutes long each webinar is.
   let companyCourseURL;
+  let webinarLength;
+
   switch (company) {
     case "Facebook":
       // NEW: we'll just link to the checkout pages for the courses
       companyCourseURL = CheckoutPages.FACEBOOK;
       // companyCourseURL = "https://www.productalliance.com/courses/flagship-facebook-pm-interview-course";
+      webinarLength = 23; // Minutes in the webinar for this company
       break;
     case "Google":
       // NEW: we'll just link to the checkout pages for the courses
       companyCourseURL = CheckoutPages.GOOGLE;
       // companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
+      webinarLength = 31; // Minutes in the webinar for this company
       break;
     default:
       // Default to the generic sales page.
       companyCourseURL = "https://www.productalliance.com/#pricing";
+      webinarLength = 31; // Minutes in the generic webinar
       break;
   }
 
@@ -563,6 +576,7 @@ function makeFacebookToasts(role) {
     role,
   );
 }
+
 function makeGoogleToasts(role) {
   return makeCompanyToasts(
     // Num course sales
