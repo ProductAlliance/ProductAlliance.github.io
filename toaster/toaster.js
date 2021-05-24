@@ -459,7 +459,7 @@ function makeWatchedWebinarToast(time=30000, duration=0){
     "time": time,
     "duration": duration,
     "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
-      our free,<br>31-minute PM interview lesson today.`,
+      our free,<br>32-minute PM interview lesson today.`,
     "ctaText": "",
     "ctaURL": ctaURL,
     "icon": ICONS.video
@@ -529,12 +529,12 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
       // NEW: we'll just link to the checkout pages for the courses
       companyCourseURL = CheckoutPages.GOOGLE;
       // companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
-      webinarLength = 31; // Minutes in the webinar for this company
+      webinarLength = 32; // Minutes in the webinar for this company
       break;
     default:
       // Default to the generic sales page.
       companyCourseURL = "https://www.productalliance.com/#pricing";
-      webinarLength = 31; // Minutes in the generic webinar
+      webinarLength = 32; // Minutes in the generic webinar
       break;
   }
 
