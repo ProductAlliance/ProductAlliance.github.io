@@ -66,6 +66,10 @@ $(function(){
 const CheckoutPages = {
   GOOGLE:     "https://course.productalliance.com/offers/ugzhbRnS/checkout",
   FACEBOOK:   "https://course.productalliance.com/offers/oLQBcqT2/checkout",
+
+  // Add new flagship courses here
+  AMAZON:     "https://course.productalliance.com/offers/ctABvYVu/checkout",
+
   DEEP_DIVES: "https://course.productalliance.com/offers/L7VUVzGB/checkout",
   HACKING:    "https://course.productalliance.com/offers/b3WbAUAY/checkout",
   BREAKING:   "https://course.productalliance.com/offers/EPo6QGzY/checkout",
@@ -326,8 +330,7 @@ const FOMO_CONFIG = [
   },
   {
     "pageRegex": "/guides/amazon-pm",
-    // TODO: switch to using the company toasts once the Amazon course is live
-    "toasts": makeGuideToasts(g_analytics.amazon_pm_viewers, "Amazon", "PM")
+    "toasts": makeAmazonToasts("PM"),
   },
   {
     "pageRegex": "/guides/microsoft-pm",
@@ -343,6 +346,11 @@ const FOMO_CONFIG = [
   {
     "pageRegex": "/courses/flagship-facebook",
     "toasts": makeFacebookToasts("PM"),
+  },
+  // Add new flagships here
+  {
+    "pageRegex": "/courses/flagship-amazon",
+    "toasts": makeAmazonToasts("PM"),
   },
 
   // For video pages
@@ -519,6 +527,7 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
   let webinarLength;
 
   switch (company) {
+    // NOTE: add new companies here
     case "Facebook":
       // NEW: we'll just link to the checkout pages for the courses
       companyCourseURL = CheckoutPages.FACEBOOK;
@@ -530,6 +539,12 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
       companyCourseURL = CheckoutPages.GOOGLE;
       // companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
       webinarLength = 32; // Minutes in the webinar for this company
+      break;
+    case "Amazon":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.AMAZON;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 22;
       break;
     default:
       // Default to the generic sales page.
@@ -585,6 +600,19 @@ function makeGoogleToasts(role) {
     g_analytics.watched_google_webinar,
     // Company
     "Google",
+    // Role
+    role,
+  );
+}
+
+function makeAmazonToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.amazon_course_sales,
+    // Num webinar views
+    g_analytics.watched_amazon_webinar,
+    // Company
+    "Amazon",
     // Role
     role,
   );
