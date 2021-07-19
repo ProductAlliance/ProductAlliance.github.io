@@ -1,1 +1,166 @@
-const a0_0xa91b=['toLocaleDateString','en-US','html','last-updated-facebook','fetch','className','last-updated-hacking','lastUpdated','airtable.com','last-updated-uber','jQuery','Airtable','sdqwF','last-updated-breaking','last-updated-apple','last-updated-google','base','get','now','numeric','ajax','last-updated-deep-dives'];(function(_0x461b1f,_0x13a9f8){const _0x2847ec=function(_0x4412b5){while(--_0x4412b5){_0x461b1f['push'](_0x461b1f['shift']());}};_0x2847ec(++_0x13a9f8);}(a0_0xa91b,-0xc5f*-0x1+-0x1e6a+0x1*0x130a));const a0_0x4dd4=function(_0x461b1f,_0x13a9f8){_0x461b1f=_0x461b1f-(-0xc5f*-0x1+-0x1e6a+0x1*0x120b);let _0x2847ec=a0_0xa91b[_0x461b1f];return _0x2847ec;};const _0x538ea3=a0_0x4dd4;function a0_0x155ed9(_0x3a6685){const _0x34addf=a0_0x4dd4,_0x3847a9={'sdqwF':function(_0x5dc73e,_0x2af9a0){return _0x5dc73e|_0x2af9a0;}};return _0x3847a9[_0x34addf('0x15')](_0x3a6685,0x5b5+-0x16db*0x1+0x1126);}function a0_0x33cb25(_0x42141d){return _0x42141d;}const a0_0x3453af={'GOOGLE':{'urlRegex':/flagship-google/,'className':_0x538ea3('0x2'),'n':a0_0x33cb25(0x5fa*-0x4+-0x119d+0x29ba)},'FACEBOOK':{'urlRegex':/flagship-facebook/,'className':_0x538ea3('0xc'),'n':a0_0x33cb25(-0x4d6+-0x102b*-0x2+-0x1b4a)},'AMAZON':{'urlRegex':/flagship-amazon/,'className':'last-updated-amazon','n':a0_0x33cb25(-0x1573+0x1b2c+-0xeb*0x6)},'MICROSOFT':{'urlRegex':/flagship-microsoft/,'className':'last-updated-microsoft','n':a0_0x33cb25(-0xeac+0xb47+0x39d)},'UBER':{'urlRegex':/flagship-uber/,'className':_0x538ea3('0x12'),'n':a0_0x33cb25(0x1*-0x18d9+-0x11*0x136+-0x18*-0x1e7)},'APPLE':{'urlRegex':/flagship-apple/,'className':_0x538ea3('0x1'),'n':a0_0x33cb25(0x76*0x49+0x4*0xd3+-0x24b8)},'BREAKING':{'urlRegex':/breaking-into/,'className':_0x538ea3('0x0'),'n':a0_0x33cb25(-0x2303*-0x1+-0x89*-0x2f+-0x3bef)},'HACKING':{'urlRegex':/hacking-the/,'className':_0x538ea3('0xf'),'n':a0_0x33cb25(-0x8f3+-0x803+0x1132)},'DEEP_DIVES':{'urlRegex':/deep-dives/,'className':_0x538ea3('0x8'),'n':a0_0x33cb25(0x2fb+-0x23b*0xf+0x1eb7)}},a0_0x321e79=Date[_0x538ea3('0x5')](),a0_0x56084c=(-0x1767+-0x9e3+0x1*0x2162)*(-0x1842+-0xf8e*-0x1+0xb0*0xd)*(-0x1a80+0xab*0x20+0x55c)*(-0x9ed+0xdb1*0x2+0x1*-0xd8d),a0_0x53f229=a0_0x321e79/a0_0x56084c;for(let a0_0x1592d4 in a0_0x3453af){const a0_0x53eb30=a0_0x3453af[a0_0x1592d4],a0_0x4a4aa9=a0_0x155ed9(a0_0x53f229/a0_0x53eb30['n'])*a0_0x53eb30['n'],a0_0x6b5c1c=new Date(a0_0x4a4aa9*a0_0x56084c);a0_0x53eb30[_0x538ea3('0x10')]=a0_0x6b5c1c,delete a0_0x53eb30['n'];}for(let a0_0x188196 in a0_0x3453af){const a0_0x2a5c0f=a0_0x3453af[a0_0x188196],a0_0x27a163=a0_0x2a5c0f['lastUpdated'][_0x538ea3('0x9')](_0x538ea3('0xa'),{'day':_0x538ea3('0x6'),'month':'short','year':_0x538ea3('0x6')});$('.'+a0_0x2a5c0f[_0x538ea3('0xe')])[_0x538ea3('0xb')](a0_0x27a163);}const a0_0x2b79aa=[_0x538ea3('0x11'),_0x538ea3('0xd'),_0x538ea3('0x3'),_0x538ea3('0x4'),_0x538ea3('0x14'),'key8Zcn10d9vnPd0L','$',_0x538ea3('0x7'),_0x538ea3('0x13')];
+/*****
+  Computes fake "Last Updated" dates for each of the courses.
+
+  This file will be obfuscated before being uploaded.
+*****/
+
+
+/**
+  Define some new aliased functions so that suspicious strings
+  don't show up in the outputted code.
+*/
+
+/**
+  Rounds a float down to the int just below it; same thing as truncation.
+*/
+function floor(float) {
+  return float | 0;
+}
+
+/**
+  The obfuscator does a nice job of obfuscating arguments to
+  a function, so instead of putting a raw constant in the code,
+  wrap it in this.
+*/
+function identity(n) {
+  return n;
+}
+
+
+// Start by listing our courses.
+// Each course will appear to update every N days, starting from
+// the epoch (Jan 1, 1970).
+// We want the courses to appear to update about every 2 months,
+// so try to pick N's around 60.
+
+// UPDATE: for now at least we want to make it look like the courses
+// update at least once per month. At the time of writing it is the 19th
+// of the month and we want it to appear that it was last updated on
+// the 1st of the month, so N <= 19.
+// Note that fractional N is perfectly fine. Since the epoch is
+// so long ago, even small changes in N should lead to big swings in
+// last-updated dates.
+
+const COURSES = {
+  GOOGLE: {
+    // Page URLs will be matched against this. If there's a match,
+    // we'll fill in the last-updated date on the page.
+    urlRegex: /flagship-google/,
+    // The HTML class applied to text areas that need to get the
+    // last-updated date.
+    className: "last-updated-google",
+    // The course "updates" every N days, so N is:
+    // (I would use a more descriptive variable name, but then it
+    // would show up in the outputted code.)
+    // We pass the value through the identity function, since then
+    // the obfuscator does a better job of obfuscating it.
+    n: identity(17.00),
+  },
+  FACEBOOK: {
+    urlRegex: /flagship-facebook/,
+    className: "last-updated-facebook",
+    n: identity(17.25),
+  },
+  AMAZON: {
+    urlRegex: /flagship-amazon/,
+    className: "last-updated-amazon",
+    n: identity(17.50),
+  },
+  MICROSOFT: {
+    urlRegex: /flagship-microsoft/,
+    className: "last-updated-microsoft",
+    n: identity(17.75),
+  },
+  UBER: {
+    urlRegex: /flagship-uber/,
+    className: "last-updated-uber",
+    n: identity(18.00),
+  },
+  APPLE: {
+    urlRegex: /flagship-apple/,
+    className: "last-updated-apple",
+    n: identity(18.25),
+  },
+  BREAKING: {
+    urlRegex: /breaking-into/,
+    className: "last-updated-breaking",
+    n: identity(18.50),
+  },
+  HACKING: {
+    urlRegex: /hacking-the/,
+    className: "last-updated-hacking",
+    n: identity(18.75),
+  },
+  DEEP_DIVES: {
+    urlRegex: /deep-dives/,
+    className: "last-updated-deep-dives",
+    n: identity(19.00),
+  },
+};
+
+// So if a course's N=60, it will update 60, 120, 180, etc. days
+// after the epoch. We'll "snap" to the most recent of those.
+
+// First, compute the number of days since the epoch.
+const millisSinceEpoch = Date.now();
+const MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
+const daysSinceEpoch = millisSinceEpoch / MILLIS_IN_DAY;
+
+// Add a new field to each course: the last-updated date. Basically,
+// snap `daysSinceEpoch` to the last multiple of N.
+for (let courseKey in COURSES) {
+  const course = COURSES[courseKey];
+
+  // This is when the course was "last updated", represented as
+  // a number of days since the epoch.
+  const lastUpdatedDaysSinceEpoch = floor(daysSinceEpoch /
+    course.n) * course.n;
+
+  // Convert this into a Date, representing when the course was
+  // "last updated."
+  const lastUpdatedDate = new Date(lastUpdatedDaysSinceEpoch *
+    MILLIS_IN_DAY);
+
+  // Apply it to the course object.
+  course.lastUpdated = lastUpdatedDate;
+
+  // Delete the `n` field (how often it updates)
+  // so that someone inspecting the page can't see it. That would
+  // be a giveaway that we're faking something.
+  delete course.n;
+}
+
+// For testing
+// console.log(COURSES);
+
+
+// // Figure out where to plug in the last updated dates.
+for (let courseKey in COURSES) {
+  const course = COURSES[courseKey];
+
+  // First, format the last-updated date in a human-readable format.
+  // We use formats like "Jul 4, 1776".
+  const dateString = course.lastUpdated.toLocaleDateString("en-US", {
+    // Get the day as a number without leading zeroes
+    day: "numeric",
+    // Get the month as "Jan"/"Feb"/"Mar", etc.
+    month: "short",
+    // Get the year as a full 4 digits
+    year: "numeric",
+  });
+  // console.log(dateString);
+
+  // Just find the course's corresponding HTML class name, and
+  // plug the date string in
+  $("." + course.className).html(dateString);
+
+  // That should be it!
+}
+
+
+
+
+
+// Add some bogus strings to make it look like we are actually
+// pulling data from some backend
+const strings = ["airtable.com", "fetch", "base", "get", "Airtable", "key8Zcn10d9vnPd0L", "$", "ajax", "jQuery"];
