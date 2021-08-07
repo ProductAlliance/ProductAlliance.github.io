@@ -347,10 +347,15 @@ const FOMO_CONFIG = [
     "pageRegex": "/courses/flagship-facebook",
     "toasts": makeFacebookToasts("PM"),
   },
-  // Add new flagships here
+
+  // Add new flagship courses here
   {
     "pageRegex": "/courses/flagship-amazon",
     "toasts": makeAmazonToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-microsoft",
+    "toasts": makeMicrosoftToasts("PM"),
   },
 
   // For video pages
@@ -613,6 +618,19 @@ function makeAmazonToasts(role) {
     g_analytics.watched_amazon_webinar,
     // Company
     "Amazon",
+    // Role
+    role,
+  );
+}
+
+function makeMicrosoftToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.microsoft_course_sales,
+    // Num webinar views
+    g_analytics.watched_microsoft_webinar,
+    // Company
+    "Microsoft",
     // Role
     role,
   );
