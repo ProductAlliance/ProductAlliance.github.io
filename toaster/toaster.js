@@ -357,6 +357,10 @@ const FOMO_CONFIG = [
     "pageRegex": "/courses/flagship-microsoft",
     "toasts": makeMicrosoftToasts("PM"),
   },
+  {
+    "pageRegex": "/courses/flagship-uber",
+    "toasts": makeUberToasts("PM"),
+  },
 
   // For video pages
   {
@@ -631,6 +635,19 @@ function makeMicrosoftToasts(role) {
     g_analytics.watched_microsoft_webinar,
     // Company
     "Microsoft",
+    // Role
+    role,
+  );
+}
+
+function makeUberToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.uber_course_sales,
+    // Num webinar views
+    g_analytics.watched_uber_webinar,
+    // Company
+    "Uber",
     // Role
     role,
   );
