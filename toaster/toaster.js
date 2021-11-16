@@ -571,7 +571,7 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
     {
       "time": 10000,
       "duration": 8000,
-      "text": `<strong>${numSales} candidates bought access</strong>
+      "text": `<strong>${numSales} candidates bought lifetime access</strong>
         to our ${company} PM course today.`,
       "ctaText": "",
       "ctaURL": companyCourseURL,
@@ -599,7 +599,7 @@ function makeFacebookToasts(role) {
     // Num webinar views
     g_analytics.watched_facebook_webinar,
     // Company
-    "Facebook (Meta)",
+    "Facebook/Meta",
     // Role
     role,
   );
