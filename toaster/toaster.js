@@ -69,6 +69,9 @@ const CheckoutPages = {
 
   // Add new flagship courses here
   AMAZON:     "https://course.productalliance.com/offers/ctABvYVu/checkout",
+  MICROSOFT:  "https://course.productalliance.com/offers/JZChL2yz/checkout",
+  APPLE:      "https://course.productalliance.com/offers/BTBUNLYF/checkout",
+  UBER:       "https://course.productalliance.com/offers/zMYWEK6t/checkout",
 
   DEEP_DIVES: "https://course.productalliance.com/offers/L7VUVzGB/checkout",
   HACKING:    "https://course.productalliance.com/offers/b3WbAUAY/checkout",
@@ -558,6 +561,24 @@ function makeCompanyToasts(numSales, numWebinarViews, company, role) {
       companyCourseURL = CheckoutPages.AMAZON;
       // Length, in minutes, for this company's webinar
       webinarLength = 22;
+      break;
+    case "Microsoft":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.MICROSOFT;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 24;
+      break;
+    case "Apple":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.APPLE;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 27;
+      break;
+    case "Uber":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.UBER;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 20;
       break;
     default:
       // Default to the generic sales page.
