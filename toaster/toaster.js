@@ -620,7 +620,7 @@ function makeFacebookToasts(role) {
     // Num webinar views
     g_analytics.watched_facebook_webinar,
     // Company
-    "Facebook/Meta",
+    "Meta",
     // Role
     role,
   );
