@@ -1,5 +1,6 @@
 $(function(){
 
+
   // Create absolutely-positioned element to store toasts
   // also try to isolate bootstrap with .bootstrapiso
   // per https://github.com/cryptoapi/Isolate-Bootstrap-4.1-CSS-Themes
@@ -30,24 +31,22 @@ $(function(){
   FOMO_CONFIG.forEach((configObject) => {
     // See if it matches the URL
     if (!hasMatched &&
-        configObject.pageRegex.test(window.location.href)) {
+        window.location.href.search(configObject.pageRegex) > -1) {
       // console.log("MATCHED", configObject);
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
         // Wait until we're ready
         // Cut wait times by 10 if we're not in prod, for easier testing
         // (also cut it on webflow so it's more authentic)
-        // let inProd = window.location.href.indexOf(ENGAUTHORITY_DOMAIN) > -1 ||
-        //   window.location.href.indexOf(UPLEVEL_DOMAIN) > -1 ||
-        //   window.location.href.indexOf("webflow.io") > -1;
-        // NEW: you're in prod as long as you're on HTTP(S) (not file://)
-        let inProd = window.location.href.indexOf("http") > -1;
+        let inProd = window.location.href.indexOf("productalliance.com") > -1 ||
+          window.location.href.indexOf("webflow.io") > -1;
         let delayMultiplier = inProd ? 1 : 1/10;
         await delay(toastInfo.time * delayMultiplier);
 
         // Now create and show
         createAndShowToast({
           messageHTML: toastInfo.text,
+          ctaText: toastInfo.ctaText,
           ctaURL: toastInfo.ctaURL,
           icon: toastInfo.icon,
           duration: toastInfo.duration,
@@ -65,26 +64,23 @@ $(function(){
 
 /** Constants **/
 const CheckoutPages = {
-  UPLEVEL:        "https://course.productalliance.com/offers/oxK3u8jm/checkout",
-  ENGAUTHORITY:   "https://course.engauthority.com/offers/6m8pnaBY/checkout",
+  GOOGLE:     "https://course.productalliance.com/offers/ugzhbRnS/checkout",
+  FACEBOOK:   "https://course.productalliance.com/offers/oLQBcqT2/checkout",
+
+  // Add new flagship courses here
+  AMAZON:     "https://course.productalliance.com/offers/ctABvYVu/checkout",
+  MICROSOFT:  "https://course.productalliance.com/offers/JZChL2yz/checkout",
+  APPLE:      "https://course.productalliance.com/offers/BTBUNLYF/checkout",
+  UBER:       "https://course.productalliance.com/offers/zMYWEK6t/checkout",
+
+  DEEP_DIVES: "https://course.productalliance.com/offers/L7VUVzGB/checkout",
+  HACKING:    "https://course.productalliance.com/offers/b3WbAUAY/checkout",
+  BREAKING:   "https://course.productalliance.com/offers/EPo6QGzY/checkout",
 };
 
-// List of domains we could be on, one per course
-const DomainRegexes = {
-  // Work for productuplevel.com or productuplevel.webflow.io
-  // (so that that site is an accurate simulation)
-  UPLEVEL:      /productuplevel\./i,
-  ENGAUTHORITY: /engauthority\./i,
-}
 
-// Shorthand to check if the page we're on matches a given regex.
-function matchUrlWithRegex(regex) {
-  return regex.test(window.location.href);
-}
 
-// Icon SVG shorthands; drop into HTML.
-// These are all from Bootstrap Icons. If you want to add a new one, be sure
-// to swap its native width and height for 1em.
+// Icon SVG shorthands; drop into HTML
 const ICONS = {
   "book": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-book" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M1 2.828v9.923c.918-.35 2.107-.692 3.287-.81 1.094-.111 2.278-.039 3.213.492V2.687c-.654-.689-1.782-.886-3.112-.752-1.234.124-2.503.523-3.388.893zm7.5-.141v9.746c.935-.53 2.12-.603 3.213-.493 1.18.12 2.37.461 3.287.811V2.828c-.885-.37-2.154-.769-3.388-.893-1.33-.134-2.458.063-3.112.752zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
@@ -125,19 +121,6 @@ const ICONS = {
   "right_arrow": `<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-11.5.5a.5.5 0 0 1 0-1h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5z"/>
 </svg>`,
-  "cash":
-    `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/>
-    <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z"/>
-    <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z"/>
-    <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z"/></svg>`,
-  "file":
-    `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-file-text-fill" viewBox="0 0 16 16">
-    <path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1zm0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1z"/></svg>`,
-  "mortarboard":
-    `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-mortarboard-fill" viewBox="0 0 16 16">
-    <path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917l-7.5-3.5Z"/>
-    <path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466 4.176 9.032Z"/></svg>`,
 };
 
 
@@ -157,37 +140,47 @@ function showWebinarPopup(){
 // Pass HTML to put inside as the main message.
 // Pass parameters:
 // - messageHTML
+// - ctaText
 // - ctaURL
 // - icon
 // - duration
 function createAndShowToast(options) {
   // Unbundle options
-  let {messageHTML, ctaURL, icon, duration} = options;
+  let {messageHTML, ctaText, ctaURL, icon, duration} = options;
 
   // Generate a unique ID
   let toastID = "toast-" + Date.now();
 
+  // Generate the CTA code. Only show it if ctaURL was given
+  let ctaHTML = "";
+  if (ctaURL) {
+    // We're nerfing the custom links in favor of plain text and an arrow button
+    // ctaHTML = `
+    //   <a href="${ctaURL}" data-dismiss="toast">
+    //     ${ctaText}
+    //   </a>`;
+    ctaHTML = `
+      ${ctaText}
+    `;
+  }
+
+  let newCtaHTML = "";
+  // if (ctaURL) {
+  //   newCtaHTML = `
+  //               <a href="${ctaURL}">
+  //                 <div class="arrow-button">
+  //                   ${ICONS.right_arrow}
+  //                 </div>
+  //               </a>
+  //               `;
+  // }
+
+
   // If we're going to a different page (i.e. URL doesn't have "#" and isn't
-  // a JavaScript pseudo-link), then make
+  // a JavaScript one), then make
   // it open in `_blank`.
-  let isTargetAnotherPage = ctaURL.indexOf("#") === -1 &&
-    ctaURL.indexOf("javascript:") === -1;
+  let isTargetAnotherPage = ctaURL.indexOf("#") === -1 && ctaURL.indexOf("javascript:") === -1;
   let targetString = isTargetAnotherPage ? `target="_blank"` : ``;
-
-
-  // We're going to alter the styles of some of these elements depending on
-  // what site we're on
-  let siteStylingClass = "";
-  if (matchUrlWithRegex(DomainRegexes.ENGAUTHORITY)) {
-    siteStylingClass = "engauthority";
-  }
-  else {
-    siteStylingClass = "uplevel";
-  }
-
-  // NEW: use the classic styling for both sites
-  siteStylingClass = "classic";
-
 
   // The body text. Either an <a> or a plain ol' span if there's no
   // CTA.
@@ -201,6 +194,7 @@ function createAndShowToast(options) {
       <a href="${ctaURL}" ${targetString} data-dismiss="toast">
         <span class="text-dark">
           ${messageHTML}
+          ${ctaHTML}
         </span>
       </a>
     `;
@@ -231,15 +225,24 @@ function createAndShowToast(options) {
   // make the toast appear clickable if it has a cta
   let toastClass = ctaURL ? "toast-clickable" : "toast-unclickable";
 
+  // Wrap toast in an <a> if it has a cta
+  let toastWrapStart = "";
+  let toastWrapEnd = "";
+  // if (ctaURL) {
+  //   toastWrapStart = `<a href="${ctaURL}" class="toast-a">`;
+  //   toastWrapEnd = `</a>`;
+  // }
+
   // Generate toast HTML
   let toastHTML = `
+  ${toastWrapStart}
     <div class="toast bg-white ${toastClass}" id="${toastID}">
-      <div class="toast-body ${siteStylingClass}">
+      <div class="toast-body">
         <div class="row no-gutters">
           <div class="col-3 rowOFF align-items-centerOFF">
             <div class="row align-items-center full-height">
               ${pulsarWrapStart}
-                <div class="pulsar mx-auto row align-items-center ${siteStylingClass}" data-dismiss="toast">
+                <div class="pulsar mx-auto row align-items-center" data-dismiss="toast">
                   <div class="text-white mx-auto toast-icon">
                     ${icon}
                   </div>
@@ -274,6 +277,7 @@ function createAndShowToast(options) {
 
       </div>
     </div>
+  ${toastWrapEnd}
   `;
 
   // Create element
@@ -284,6 +288,19 @@ function createAndShowToast(options) {
   let toastOptions = duration && duration > 0 ?
     { delay: duration } : { autohide: false };
   $('#' + toastID).toast(toastOptions);
+
+  // style the toast
+
+  // Set up click handlers on the pulsing bubble to go to the CTA.
+  // That lets people get to the endpoint more easily without screwing up
+  // formatting by adding an <a> tag
+  // if (ctaURL) {
+  //   $('#' + toastID).find(".pulsar")
+  //     .addClass("clickable")
+  //     .on("click", () => {
+  //       window.location.href = ctaURL;
+  //     });
+  // }
 
   // Now show it
   $('#' + toastID).toast('show');
@@ -297,26 +314,108 @@ function createAndShowToast(options) {
 
 // Configuration for where/how to show the toasts.
 const FOMO_CONFIG = [
-  // For now, simple: one per course
+  // For the interview strategy guide pages
   {
-    "pageRegex": DomainRegexes.ENGAUTHORITY,
-    "toasts": makeStandardCourseToasts(
-      g_analytics.engauthority_sales,
-      g_analytics.engauthority_downloads,
-      "EngAuthority",
-      "software engineers",
-      CheckoutPages.ENGAUTHORITY,
-    )
+    "pageRegex": "/guides/facebook-pm",
+    "toasts": makeFacebookToasts("PM"),
   },
   {
-    "pageRegex": DomainRegexes.UPLEVEL,
-    "toasts": makeStandardCourseToasts(
-      g_analytics.uplevel_sales,
-      g_analytics.uplevel_downloads,
-      "Product Uplevel",
-      "product managers",
-      CheckoutPages.UPLEVEL,
-    )
+    "pageRegex": "/guides/facebook-rpm",
+    "toasts": makeFacebookToasts("RPM"),
+  },
+  {
+    "pageRegex": "/guides/google-pm",
+    "toasts": makeGoogleToasts("PM"),
+  },
+  {
+    "pageRegex": "/guides/google-apm",
+    "toasts": makeGoogleToasts("APM"),
+  },
+  {
+    "pageRegex": "/guides/amazon-pm",
+    "toasts": makeAmazonToasts("PM"),
+  },
+  {
+    "pageRegex": "/guides/microsoft-pm",
+    // TODO: switch to using the company toasts once the Microsoft course is live
+    "toasts": makeGuideToasts(g_analytics.microsoft_pm_viewers, "Microsoft", "PM")
+  },
+
+  // For individual course pages. Other courses will use the generic toasts.
+  {
+    "pageRegex": "/courses/flagship-google",
+    "toasts": makeGoogleToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-facebook",
+    "toasts": makeFacebookToasts("PM"),
+  },
+
+  // Add new flagship courses here
+  {
+    "pageRegex": "/courses/flagship-amazon",
+    "toasts": makeAmazonToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-microsoft",
+    "toasts": makeMicrosoftToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-uber",
+    "toasts": makeUberToasts("PM"),
+  },
+  {
+    "pageRegex": "/courses/flagship-apple",
+    "toasts": makeAppleToasts("PM"),
+  },
+
+  // For video pages
+  {
+    "pageRegex": "/videos/snapchat",
+    "toasts": makeVideoToasts(g_analytics.watched_snapchat_video, "Snapchat")
+  },
+  {
+    "pageRegex": "/videos/airbnb",
+    "toasts": makeVideoToasts(g_analytics.watched_airbnb_video, "Airbnb")
+  },
+  {
+    "pageRegex": "/videos/apple",
+    "toasts": makeVideoToasts(g_analytics.watched_apple_video, "Apple")
+  },
+  {
+    "pageRegex": "/videos/uber",
+    "toasts": makeVideoToasts(g_analytics.watched_uber_video, "Uber")
+  },
+
+  // Job/internship lists
+  {
+    "pageRegex": "/job-list",
+    "toasts": makeJobInternToasts(g_analytics.used_job_list, "job")
+  },
+  {
+    "pageRegex": "/internship-list",
+    "toasts": makeJobInternToasts(g_analytics.used_internship_list, "internship")
+  },
+
+  // If we're already on the pricing page, don't get in the way!
+  {
+    "pageRegex": "pricing",
+    "toasts": []
+  },
+  // Similarly, if you're at the footer (result of a CTA to sign up for the webinar),
+  // don't upsell anything
+  {
+    "pageRegex": "footer",
+    "toasts": []
+  },
+
+  // Fall back to show some generic toasts on all other pages
+  {
+    "pageRegex": ".*",
+    "toasts": [
+      makeBoughtCourseToast(time=10000, duration=8000),
+      makeWatchedWebinarToast(time=20000, duration=0)
+    ]
   },
 ];
 
@@ -325,34 +424,93 @@ const FOMO_CONFIG = [
   Generate configurations for toasts.
 **/
 
-/**
-  Creates toasts advertising how many people purchased a course (EA or Uplevel)
-  or just put in their email.
-*/
-function makeStandardCourseToasts(numSales, numDownloads, courseName, studentTitles, checkoutURL) {
+// This is for /guides/ pages
+function makeGuideToasts(viewNumber, company, role){
   return [
-    // First, upsell the course itself
     {
       "time": 10000,
       "duration": 8000,
-      "text": `<strong>${numSales} ${studentTitles} enrolled</strong>
-        in ${courseName} today.`,
-      "ctaURL": checkoutURL,
-      "icon": ICONS.mortarboard,
+      "text": `<strong>${viewNumber} ${company} ${role} candidates</strong>
+        read this cheat sheet today.`,
+      "icon": ICONS.book_half,
     },
-
-    // Next, upsell the email-grabber popup that lets people download the
-    // reimbursement request template
-    {
-      "time": 20000,
-      "duration": 0, // Make it persistent
-      "text": `${numDownloads} ${studentTitles} downloaded our
-        corporate <strong>reimbursement letter template</strong> today.`,
-      "ctaURL": getWebinarCtaURL(),
-      "icon": ICONS.cash,
-    },
-  ]
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
+  ];
 }
+
+// This is for /videos/ pages
+function makeVideoToasts(viewNumber, caseStudy){
+  return [
+    {
+      "time": 10000,
+      "duration": 8000,
+      "text": `<strong>${viewNumber} PM candidates</strong>
+        watched this ${caseStudy} strategy video today.`,
+      "icon": ICONS.play,
+    },
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
+  ];
+}
+
+// This is for the job or internship list
+function makeJobInternToasts(viewNumber, type){
+  return [
+    {
+      "time": 10000,
+      "duration": 8000,
+      "text": `<strong>${viewNumber} PM candidates</strong>
+        used this list to apply for PM ${type}s today.`,
+      "icon": ICONS.briefcase,
+    },
+    makeBoughtCourseToast(time=20000, duration=8000),
+    makeWatchedWebinarToast(time=30000, duration=0)
+  ];
+}
+
+
+
+// Small utility chunks
+function makeWatchedWebinarToast(time=30000, duration=0){
+  // try showing the webinar popup if it exists on the page.
+  // that has a really nice email-grabbing UI.
+  // otherwise, just go to the footer, where we have a simpler but omnipresent
+  // email-grabber.
+  let ctaURL = getWebinarCtaURL();
+
+  return {
+    "time": time,
+    "duration": duration,
+    "text": `<strong>${g_analytics.watched_webinar} candidates watched</strong>
+      our free,<br>32-minute PM interview lesson today.`,
+    "ctaText": "",
+    "ctaURL": ctaURL,
+    "icon": ICONS.video
+  };
+}
+
+function makeBoughtCourseToast(time=20000, duration=8000) {
+  return {
+    "time": time,
+    "duration": duration,
+    "text": `<strong>${g_analytics.total_course_sales} candidates bought</strong>
+      lifetime access to our interview courses today.`,
+    "ctaText": "",
+    "ctaURL": "https://productalliance.com/#pricing",
+    "icon": ICONS.cart
+  };
+}
+
+
+
+
+
+/**
+
+  ALL NEW functions.
+
+*/
 
 /**
   Returns a CTA URL for webinar upsells.
@@ -369,4 +527,166 @@ function getWebinarCtaURL() {
   }
 
   return ctaURL;
+}
+
+
+/**
+  NEW: Creates a series of toasts for a given company's course or guide
+  page. This upsells the specific company webinar, then its course.
+*/
+function makeCompanyToasts(numSales, numWebinarViews, company, role) {
+
+  // Each company's purchase upsell goes to a different page. Compute that
+  // URL here.
+  // We'll also show the number of minutes long each webinar is.
+  let companyCourseURL;
+  let webinarLength;
+
+  switch (company) {
+    // NOTE: add new companies here
+    case "Facebook":
+      // NEW: we'll just link to the checkout pages for the courses
+      companyCourseURL = CheckoutPages.FACEBOOK;
+      // companyCourseURL = "https://www.productalliance.com/courses/flagship-facebook-pm-interview-course";
+      webinarLength = 23; // Minutes in the webinar for this company
+      break;
+    case "Google":
+      // NEW: we'll just link to the checkout pages for the courses
+      companyCourseURL = CheckoutPages.GOOGLE;
+      // companyCourseURL = "https://www.productalliance.com/courses/flagship-google-pm-interview-course";
+      webinarLength = 32; // Minutes in the webinar for this company
+      break;
+    case "Amazon":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.AMAZON;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 22;
+      break;
+    case "Microsoft":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.MICROSOFT;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 24;
+      break;
+    case "Apple":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.APPLE;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 27;
+      break;
+    case "Uber":
+      // Checkout page for this company's course
+      companyCourseURL = CheckoutPages.UBER;
+      // Length, in minutes, for this company's webinar
+      webinarLength = 20;
+      break;
+    default:
+      // Default to the generic sales page.
+      companyCourseURL = "https://www.productalliance.com/#pricing";
+      webinarLength = 32; // Minutes in the generic webinar
+      break;
+  }
+
+  return [
+    // First, upsell the course itself
+    {
+      "time": 10000,
+      "duration": 8000,
+      "text": `<strong>${numSales} candidates bought lifetime access</strong>
+        to our ${company} PM course today.`,
+      "ctaText": "",
+      "ctaURL": companyCourseURL,
+      "icon": ICONS.cart,
+    },
+
+    // Next, upsell the webinar
+    {
+      "time": 20000,
+      "duration": 0, // Make it persistent
+      "text": `<strong>${numWebinarViews} candidates watched</strong>
+        our free ${company} PM interview lesson today.`,
+      "ctaText": "",
+      "ctaURL": getWebinarCtaURL(),
+      "icon": ICONS.video,
+    },
+  ];
+}
+
+// Reusable aliases for the above.
+function makeFacebookToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.facebook_course_sales,
+    // Num webinar views
+    g_analytics.watched_facebook_webinar,
+    // Company
+    "Meta",
+    // Role
+    role,
+  );
+}
+
+function makeGoogleToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.google_course_sales,
+    // Num webinar views
+    g_analytics.watched_google_webinar,
+    // Company
+    "Google",
+    // Role
+    role,
+  );
+}
+
+function makeAmazonToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.amazon_course_sales,
+    // Num webinar views
+    g_analytics.watched_amazon_webinar,
+    // Company
+    "Amazon",
+    // Role
+    role,
+  );
+}
+
+function makeMicrosoftToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.microsoft_course_sales,
+    // Num webinar views
+    g_analytics.watched_microsoft_webinar,
+    // Company
+    "Microsoft",
+    // Role
+    role,
+  );
+}
+
+function makeUberToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.uber_course_sales,
+    // Num webinar views
+    g_analytics.watched_uber_webinar,
+    // Company
+    "Uber",
+    // Role
+    role,
+  );
+}
+
+function makeAppleToasts(role) {
+  return makeCompanyToasts(
+    // Num course sales
+    g_analytics.apple_course_sales,
+    // Num webinar views
+    g_analytics.watched_apple_webinar,
+    // Company
+    "Apple",
+    // Role
+    role,
+  );
 }
