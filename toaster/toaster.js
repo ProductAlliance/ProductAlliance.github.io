@@ -1,4 +1,4 @@
-$(function(){
+$(function () {
 
 
   // Create absolutely-positioned element to store toasts
@@ -31,7 +31,7 @@ $(function(){
   FOMO_CONFIG.forEach((configObject) => {
     // See if it matches the URL
     if (!hasMatched &&
-        window.location.href.search(configObject.pageRegex) > -1) {
+      window.location.href.search(configObject.pageRegex) > -1) {
       // console.log("MATCHED", configObject);
       // Loop through the toasts
       configObject.toasts.forEach(async (toastInfo) => {
@@ -40,7 +40,7 @@ $(function(){
         // (also cut it on webflow so it's more authentic)
         let inProd = window.location.href.indexOf("productalliance.com") > -1 ||
           window.location.href.indexOf("webflow.io") > -1;
-        let delayMultiplier = inProd ? 1 : 1/10;
+        let delayMultiplier = inProd ? 1 : 1 / 10;
         await delay(toastInfo.time * delayMultiplier);
 
         // Now create and show
@@ -64,18 +64,18 @@ $(function(){
 
 /** Constants **/
 const CheckoutPages = {
-  GOOGLE:     "https://course.productalliance.com/offers/ugzhbRnS/checkout",
-  FACEBOOK:   "https://course.productalliance.com/offers/oLQBcqT2/checkout",
+  GOOGLE: "https://course.productalliance.com/offers/ugzhbRnS/checkout",
+  FACEBOOK: "https://course.productalliance.com/offers/oLQBcqT2/checkout",
 
   // Add new flagship courses here
-  AMAZON:     "https://course.productalliance.com/offers/ctABvYVu/checkout",
-  MICROSOFT:  "https://course.productalliance.com/offers/JZChL2yz/checkout",
-  APPLE:      "https://course.productalliance.com/offers/BTBUNLYF/checkout",
-  UBER:       "https://course.productalliance.com/offers/zMYWEK6t/checkout",
+  AMAZON: "https://course.productalliance.com/offers/ctABvYVu/checkout",
+  MICROSOFT: "https://course.productalliance.com/offers/JZChL2yz/checkout",
+  APPLE: "https://course.productalliance.com/offers/BTBUNLYF/checkout",
+  UBER: "https://course.productalliance.com/offers/zMYWEK6t/checkout",
 
   DEEP_DIVES: "https://course.productalliance.com/offers/L7VUVzGB/checkout",
-  HACKING:    "https://course.productalliance.com/offers/b3WbAUAY/checkout",
-  BREAKING:   "https://course.productalliance.com/offers/EPo6QGzY/checkout",
+  HACKING: "https://course.productalliance.com/offers/b3WbAUAY/checkout",
+  BREAKING: "https://course.productalliance.com/offers/EPo6QGzY/checkout",
 };
 
 
@@ -129,7 +129,7 @@ const ICONS = {
  */
 // Shows the popup that advertises the webinar and asks the user to
 // input their email address.
-function showWebinarPopup(){
+function showWebinarPopup() {
   $('#webinarpopup').css({ "display": "flex", "opacity": 1 });
   $('.main-popup').css({ "display": "flex", "opacity": 1 });
   $('.popup-overlay').css({ "display": "flex", "opacity": 1 });
@@ -146,7 +146,7 @@ function showWebinarPopup(){
 // - duration
 function createAndShowToast(options) {
   // Unbundle options
-  let {messageHTML, ctaText, ctaURL, icon, duration} = options;
+  let { messageHTML, ctaText, ctaURL, icon, duration } = options;
 
   // Generate a unique ID
   let toastID = "toast-" + Date.now();
@@ -408,13 +408,19 @@ const FOMO_CONFIG = [
     "pageRegex": "footer",
     "toasts": []
   },
+  // Also don't show anything on the bounty program page, since it has to look 
+  // more formal 
+  {
+    "pageRegex": "bounty-program",
+    "toasts": []
+  },
 
   // Fall back to show some generic toasts on all other pages
   {
     "pageRegex": ".*",
     "toasts": [
-      makeBoughtCourseToast(time=10000, duration=8000),
-      makeWatchedWebinarToast(time=20000, duration=0)
+      makeBoughtCourseToast(time = 10000, duration = 8000),
+      makeWatchedWebinarToast(time = 20000, duration = 0)
     ]
   },
 ];
@@ -425,7 +431,7 @@ const FOMO_CONFIG = [
 **/
 
 // This is for /guides/ pages
-function makeGuideToasts(viewNumber, company, role){
+function makeGuideToasts(viewNumber, company, role) {
   return [
     {
       "time": 10000,
@@ -434,13 +440,13 @@ function makeGuideToasts(viewNumber, company, role){
         read this cheat sheet today.`,
       "icon": ICONS.book_half,
     },
-    makeBoughtCourseToast(time=20000, duration=8000),
-    makeWatchedWebinarToast(time=30000, duration=0)
+    makeBoughtCourseToast(time = 20000, duration = 8000),
+    makeWatchedWebinarToast(time = 30000, duration = 0)
   ];
 }
 
 // This is for /videos/ pages
-function makeVideoToasts(viewNumber, caseStudy){
+function makeVideoToasts(viewNumber, caseStudy) {
   return [
     {
       "time": 10000,
@@ -449,13 +455,13 @@ function makeVideoToasts(viewNumber, caseStudy){
         watched this ${caseStudy} strategy video today.`,
       "icon": ICONS.play,
     },
-    makeBoughtCourseToast(time=20000, duration=8000),
-    makeWatchedWebinarToast(time=30000, duration=0)
+    makeBoughtCourseToast(time = 20000, duration = 8000),
+    makeWatchedWebinarToast(time = 30000, duration = 0)
   ];
 }
 
 // This is for the job or internship list
-function makeJobInternToasts(viewNumber, type){
+function makeJobInternToasts(viewNumber, type) {
   return [
     {
       "time": 10000,
@@ -464,15 +470,15 @@ function makeJobInternToasts(viewNumber, type){
         used this list to apply for PM ${type}s today.`,
       "icon": ICONS.briefcase,
     },
-    makeBoughtCourseToast(time=20000, duration=8000),
-    makeWatchedWebinarToast(time=30000, duration=0)
+    makeBoughtCourseToast(time = 20000, duration = 8000),
+    makeWatchedWebinarToast(time = 30000, duration = 0)
   ];
 }
 
 
 
 // Small utility chunks
-function makeWatchedWebinarToast(time=30000, duration=0){
+function makeWatchedWebinarToast(time = 30000, duration = 0) {
   // try showing the webinar popup if it exists on the page.
   // that has a really nice email-grabbing UI.
   // otherwise, just go to the footer, where we have a simpler but omnipresent
@@ -490,7 +496,7 @@ function makeWatchedWebinarToast(time=30000, duration=0){
   };
 }
 
-function makeBoughtCourseToast(time=20000, duration=8000) {
+function makeBoughtCourseToast(time = 20000, duration = 8000) {
   return {
     "time": time,
     "duration": duration,
@@ -521,7 +527,7 @@ function getWebinarCtaURL() {
   // otherwise, just go to the footer, where we have a simpler but omnipresent
   // email-grabber.
   let ctaURL = "#footer";
-  if ($('#webinarpopup').length > 0){
+  if ($('#webinarpopup').length > 0) {
     // the popup exists!
     ctaURL = "javascript:showWebinarPopup()";
   }
